@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Category;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -28,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.category.create');
     }
 
     /**
@@ -39,9 +40,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request['slug'] = Str::slug($request['name']);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'slug' => 'required|unique:categories'
+            'slug' => 'unique:categories'
         ]);
         if ($validator->fails()) {
             return redirect()->route('category.create')->withErrors($validator)->withInput();
@@ -49,6 +51,7 @@ class CategoryController extends Controller
         $validated = $validator->validated();
         try {
             Category::create($validated);
+            return redirect()->route('category.index');
         } catch (\Throwable $th) {
             dd($th);
         }
@@ -71,9 +74,9 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Category $slug)
     {
-        //
+        return view('dashboard.category.edit', ['data' => $slug]);
     }
 
     /**
@@ -83,18 +86,20 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $slug)
     {
+        $request['slug'] = Str::slug($request['name']);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'slug' => 'required|unique:categories'
+            'slug' => 'required'
         ]);
         if ($validator->fails()) {
-            return redirect()->route('category.edit')->withErrors($validator)->withInput();
+            return redirect()->route('category.edit', ['slug' => $slug->slug])->withErrors($validator)->withInput();
         }
         $validated = $validator->validated();
         try {
-            $category->update($validated);
+            $slug->update($validated);
+            return redirect()->route('category.index');
         } catch (\Throwable $th) {
             dd($th);
         }
@@ -106,10 +111,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Category $slug)
     {
-        $category->delete();
-        redirect()->route('category.index');
+        $slug->delete();
+        return redirect()->route('category.index');
     }
     public function getCategoriesTable()
     {
