@@ -1,7 +1,6 @@
 <footer class="main-footer">
-    <div class="pull-right hidden-xs">
+    <div class="float-right d-none d-sm-inline">
         <b>SIB</b> NF COMPUTER
     </div>
-    <strong>Copyright &copy; {{ now()->year }} - Kelompok 10.</strong> All rights
-    reserved.
+    <strong>Copyright &copy; {{ now()->year }} - Kelompok 10.</strong> All rights reserved.
 </footer>
