@@ -11,15 +11,15 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ asset('dashboardpage/dist/img/user2-160x160.jpg') }}" class="user-image"
                              alt="User Image">
-                        <span class="hidden-xs">ADMIN</span>
+                        <span class="hidden-xs">{{ auth()->user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="user-header">
                             <img src="{{ asset('dashboardpage/dist/img/user2-160x160.jpg') }}" class="img-circle"
                                  alt="User Image">
                             <p>
-                                Admin - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                {{ auth()->user()->name }} - Admin
+                                <small>Member since {{ auth()->user()->created_at->diffForHumans() }}</small>
                             </p>
                         </li>
                         <li class="user-footer">
@@ -27,7 +27,10 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Keluar</a>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-default btn-flat">Logout</button>
+                                </form>
                             </div>
                         </li>
                     </ul>

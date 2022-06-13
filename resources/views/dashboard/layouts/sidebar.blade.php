@@ -5,19 +5,19 @@ $menus = [
         'menu' => [
             [
                 'name' => 'Kategori',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-cube',
                 'active' => false,
             ],
             [
                 'name' => 'Produk',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-cubes',
                 'active' => false,
             ],
             [
                 'name' => 'Supplier',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-truck',
                 'active' => false,
             ],
@@ -28,19 +28,19 @@ $menus = [
         'menu' => [
             [
                 'name' => 'Pembelian',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-handshake-o',
                 'active' => false,
             ],
             [
                 'name' => 'Penjualan',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-money',
                 'active' => false,
             ],
             [
                 'name' => 'Transaksi',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-cart-arrow-down',
                 'active' => false,
             ],
@@ -51,7 +51,7 @@ $menus = [
         'menu' => [
             [
                 'name' => 'Laporan Penjualan',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-file-pdf-o',
                 'active' => false,
             ],
@@ -62,29 +62,18 @@ $menus = [
         'menu' => [
             [
                 'name' => 'Profile',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-user',
                 'active' => false,
             ],
             [
                 'name' => 'Users',
-                'route' => '#',
+                'route' => '',
                 'icon' => 'fa fa-users',
                 'active' => false,
             ],
         ]
-    ],
-    [
-        'header' => 'SYSTEM',
-        'menu' => [
-            [
-                'name' => 'Logout',
-                'route' => '#',
-                'icon' => 'fa fa-sign-out',
-                'active' => false,
-            ],
-        ]
-    ],
+    ]
 ]
 @endphp
 
@@ -95,7 +84,7 @@ $menus = [
                 <img src="{{ asset('dashboardpage/dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>User Full Name</p>
+                <p>{{ auth()->user()->name }}</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -109,13 +98,25 @@ $menus = [
                 <li class="header">{{ $menu['header'] }}</li>
                 @foreach ($menu['menu'] as $submenu)
                     <li class="{{ $submenu['active'] ? 'active' : '' }}">
-                        <a href="{{ $submenu['route'] }}">
+                        <a href="{{ $submenu['route'] ? route($submenu['route']) : '#'}}">
                             <i class="{{ $submenu['icon'] }}"></i>
                             <span>{{ $submenu['name'] }}</span>
                         </a>
                     </li>
                 @endforeach
             @endforeach
+
+            <li class="header">SYSTEM</li>
+            <li>
+                <a href="#"
+                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    <i class="fa fa-sign-out"></i>
+                    <span>Logout</span>
+                </a>
+                <form action="{{ route('logout') }}" id="logout-form" method="POST">
+                    @csrf
+                </form>
+            </li>
         </ul>
     </section>
 </aside>

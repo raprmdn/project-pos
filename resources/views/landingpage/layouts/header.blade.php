@@ -11,8 +11,30 @@
                 <li><a class="nav-link scrollto" href="#faq">FAQ</a></li>
                 <li><a class="nav-link scrollto" href="#team">Team</a></li>
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                @auth
+                    <li class="dropdown"><a href="#"><span>{{ auth()->user()->name }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li><a href="#">Profile Settings</a></li>
+                            <li>
+                                <a href="#"
+                                   onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form action="{{ route('logout') }}" id="logout-form" method="POST">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endauth
             </ul>
         </nav>
-        <a class="btn-getstarted" href="{{ route('dashboard') }}">Dashboard</a>
+        @auth
+            <a class="btn-getstarted" href="{{ route('dashboard') }}">Dashboard</a>
+        @endauth
+        @guest
+            <a class="btn-getstarted" href="{{ route('login') }}">Sign In</a>
+        @endguest
     </div>
 </header>
