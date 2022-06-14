@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sale_details', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('sale_id');
-            $table->integer('product_id');
+            $table->id();
+            $table->foreignId('sale_id')->constrained('sales');
+            $table->foreignId('product_id')->constrained('products');
             $table->integer('unit_price');
             $table->integer('qty');
             $table->integer('total');

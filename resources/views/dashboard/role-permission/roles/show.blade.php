@@ -79,23 +79,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('assign-role', $role) }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="user_id">User</label>
-                            <select name="user_id" id="user_id" class="form-control">
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-footer text-right">
-                        <button type="submit" class="btn btn-primary">Assign</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+                <div class="modal-body">
+                    <table class="table table-hover table-striped" id="user-list" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -111,6 +106,21 @@
     <script src="{{ asset('dashboardpage/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script>
+        $(document).ready(function() {
+            $('#user-list').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('users.table') }}',
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false },
+                    { data: 'name', name: 'name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ]
+            });
+        });
+
         $(document).ready(function() {
             $('#user-role-list').DataTable({
                 responsive: true,
@@ -155,6 +165,29 @@
                         }
                     });
                 }
+            });
+        });
+
+        $('#user-list').on('click', '.select-user', function () {
+            let url = `{!! route('assign-role', $role->id) !!}`;
+            let userId = $(this).data('id');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: {method: 'POST', _token:"{{ csrf_token() }}", submit: true, user_id: userId}
+            }).always(function (data) {
+                $('#addUsers').modal('hide');
+                if (data.status) {
+                    Swal.fire({
+                        title: data.message,
+                        icon: 'success'
+                    }).then(function () {
+                        $('#user-role-list').DataTable().draw();
+                    });
+                }
+                console.log(data)
             });
         });
     </script>

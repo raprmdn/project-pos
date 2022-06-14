@@ -4,11 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
+
     use HasFactory;
     protected $guarded = ['id'];
+    protected $appends = ['product_picture'];
+
+    public function getProductPictureAttribute() : string
+    {
+        return "/storage/" . $this->picture;
+    }
+
     public function sale_details()
     {
         return $this->hasMany(SaleDetail::class);
@@ -24,5 +34,10 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }

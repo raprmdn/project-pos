@@ -17,9 +17,9 @@
                 ],
                 [
                     'name' => 'Produk',
-                    'route' => '',
+                    'route' => 'products.index',
                     'icon' => 'fa fa-cubes',
-                    'active' => false,
+                    'active' => request()->segment(2) == 'products',
                 ],
                 [
                     'name' => 'Supplier',
@@ -70,7 +70,7 @@
                     'name' => 'Role',
                     'route' => 'roles.index',
                     'icon' => 'fas fa-crown',
-                    'active' => request()->segment(3) == 'role',
+                    'active' => request()->segment(3) == 'roles',
                 ],
                 [
                     'name' => 'Permissions',

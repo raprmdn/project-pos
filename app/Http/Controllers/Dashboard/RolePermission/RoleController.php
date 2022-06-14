@@ -71,7 +71,10 @@ class RoleController extends Controller
         $user = User::findOrFail(request('user_id'));
         $user->syncRoles($role->id);
 
-        return redirect()->back()->with('success', 'Role assigned successfully.');
+        return response()->json([
+            'status' => true,
+            'message' => 'Role assigned successfully.'
+        ]);
     }
 
     public function revokeRole(Role $role)

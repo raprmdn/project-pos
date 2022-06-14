@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
+            $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->integer('invoice')->unique();
             $table->integer('total_items');
             $table->integer('subtotal');

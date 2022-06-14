@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_products', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('supplier_id');
+            $table->id();
+            $table->foreignId('supplier_id')->constrained('suppliers');
             $table->string('invoice')->unique();
             $table->integer('total_items');
             $table->integer('subtotal');
