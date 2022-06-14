@@ -6,6 +6,7 @@ use App\Http\Controllers\{Category\CategoryController,
     Dashboard\RolePermission\RoleController,
     Dashboard\UserController,
     IndexController};
+use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', IndexController::class)->name('index');
@@ -19,6 +20,11 @@ Route::middleware('auth')->group(function () {
             'category' => 'slug'
         ]);
         Route::get('categories-table', [CategoryController::class, 'getCategoriesTable']);
+
+        Route::resource("unit", UnitController::class)->parameters([
+            'unit' => 'slug'
+        ]);
+        Route::get('units-table', [UnitController::class, 'getUnitsTable']);
 
         Route::prefix('role-permission')->group(function() {
 

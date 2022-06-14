@@ -10,6 +10,12 @@
                     'active' => request()->segment(2) == 'category',
                 ],
                 [
+                    'name' => 'Unit',
+                    'route' => 'unit.index',
+                    'icon' => 'fa fa-cube',
+                    'active' => request()->segment(2) == 'unit',
+                ],
+                [
                     'name' => 'Produk',
                     'route' => '',
                     'icon' => 'fa fa-cubes',
