@@ -58,6 +58,23 @@
             ],
         ],
         [
+            'header' => 'ROLE & PERMISSIONS',
+            'menu' => [
+                [
+                    'name' => 'Role',
+                    'route' => 'roles.index',
+                    'icon' => 'fas fa-crown',
+                    'active' => request()->segment(3) == 'role',
+                ],
+                [
+                    'name' => 'Permissions',
+                    'route' => 'permissions.index',
+                    'icon' => 'fas fa-key',
+                    'active' => request()->segment(3) == 'permissions',
+                ],
+            ],
+        ],
+        [
             'header' => 'SETTINGS',
             'menu' => [
                 [

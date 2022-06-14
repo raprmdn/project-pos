@@ -8,7 +8,7 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/fontawesome-free/css/all.min.css') }}">
-  @yield('css')
+  @yield('styles')
   <link rel="stylesheet" href="{{ asset('dashboardpage/dist/css/adminlte.min.css') }}">
 </head>
 
