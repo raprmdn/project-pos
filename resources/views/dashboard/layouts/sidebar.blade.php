@@ -81,6 +81,29 @@
             ],
         ],
         [
+            'header' => 'TRASH',
+            'menu' => [
+                [
+                    'name' => 'Products Trash',
+                    'route' => 'trash.products',
+                    'icon' => 'fas fa-trash-alt',
+                    'active' => request()->segment(3) == 'products',
+                ],
+                [
+                    'name' => 'Categories Trash',
+                    'route' => '',
+                    'icon' => 'fas fa-trash-alt',
+                    'active' => false,
+                ],
+                [
+                    'name' => 'Units Trash',
+                    'route' => '',
+                    'icon' => 'fas fa-trash-alt',
+                    'active' => false,
+                ],
+            ],
+        ],
+        [
             'header' => 'SETTINGS',
             'menu' => [
                 [

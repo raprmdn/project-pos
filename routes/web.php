@@ -5,6 +5,7 @@ use App\Http\Controllers\{Category\CategoryController,
     Dashboard\ProductController,
     Dashboard\RolePermission\PermissionController,
     Dashboard\RolePermission\RoleController,
+    Dashboard\TrashController,
     Dashboard\UserController,
     IndexController};
 use App\Http\Controllers\Unit\UnitController;
@@ -47,5 +48,11 @@ Route::middleware('auth')->group(function () {
             'product' => 'slug'
         ]);
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
+
+        Route::prefix('trash')->group(function () {
+            Route::get('products', [TrashController::class, 'productsTrashed'])->name('trash.products');
+            Route::get('products-trashed-table', [TrashController::class, 'productsTrashedTable'])->name('trash.products.table');
+            Route::put('products/{slug}', [TrashController::class, 'productsRestore'])->name('trash.products.restore');
+        });
     });
 });
