@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Unit;
 use Yajra\DataTables\DataTables;
 
 class TrashController extends Controller
@@ -57,6 +58,44 @@ class TrashController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Product restored successfully',
+        ]);
+    }
+
+    public function unitsTrashed()
+    {
+        return view('dashboard.trashed.units.index');
+    }
+
+    public function unitsTrashedTable()
+    {
+        $units = Unit::onlyTrashed()->get();
+
+        return DataTables::of($units)
+            ->addIndexColumn()
+            ->addColumn('action', function ($unit) {
+                $urlRestore = route('trash.units.restore', $unit->slug);
+                return '
+                        <div class="row">
+                            <button class="btn btn-primary btn-xs restore-item"
+                                    title="Restore unit"
+                                    data-url="' . $urlRestore . '"
+                                    data-name="' . $unit->name . '">
+                                <i class="fas fa-undo-alt"></i>
+                            </button>
+                        </div>
+                        ';
+            })
+            ->make();
+    }
+
+    public function unitsRestore($slug)
+    {
+        $unit = Unit::withTrashed()->where('slug', $slug)->first();
+        $unit->restore();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Unit restored successfully',
         ]);
     }
 }

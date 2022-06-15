@@ -97,9 +97,9 @@
                 ],
                 [
                     'name' => 'Units Trash',
-                    'route' => '',
+                    'route' => 'trash.units',
                     'icon' => 'fas fa-trash-alt',
-                    'active' => false,
+                    'active' => request()->segment(3) == 'units',
                 ],
             ],
         ],

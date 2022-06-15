@@ -54,5 +54,11 @@ Route::middleware('auth')->group(function () {
             Route::get('products-trashed-table', [TrashController::class, 'productsTrashedTable'])->name('trash.products.table');
             Route::put('products/{slug}', [TrashController::class, 'productsRestore'])->name('trash.products.restore');
         });
+
+        Route::prefix('trash')->group(function () {
+            Route::get('units', [TrashController::class, 'unitsTrashed'])->name('trash.units');
+            Route::get('units-trashed-table', [TrashController::class, 'unitsTrashedTable'])->name('trash.units.table');
+            Route::put('units/{slug}', [TrashController::class, 'unitsRestore'])->name('trash.units.restore');
+        });
     });
 });
