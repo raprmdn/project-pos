@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
 use Yajra\DataTables\DataTables;
@@ -31,13 +32,13 @@ class TrashController extends Controller
                 return $product->unit->name;
             })
             ->editColumn('product_picture', function ($product) {
-                return '<img src="' .  asset($product->product_picture) . '" alt="'.$product->name.'" class="img-thumbnail" width="100" height="100">';
+                return '<img src="' .  asset($product->product_picture) . '" alt="' . $product->name . '" class="img-thumbnail" width="100" height="100">';
             })
             ->addColumn('action', function ($product) {
                 $urlRestore = route('trash.products.restore', $product->slug);
                 return '
                         <div class="row">
-                            <button class="btn btn-primary btn-xs restore-item"
+                            <button class="btn btn-primary restore-item"
                                     title="Restore product"
                                     data-url="' . $urlRestore . '"
                                     data-name="' . $product->name . '">
@@ -76,7 +77,7 @@ class TrashController extends Controller
                 $urlRestore = route('trash.units.restore', $unit->slug);
                 return '
                         <div class="row">
-                            <button class="btn btn-primary btn-xs restore-item"
+                            <button class="btn btn-primary restore-item"
                                     title="Restore unit"
                                     data-url="' . $urlRestore . '"
                                     data-name="' . $unit->name . '">
@@ -92,6 +93,44 @@ class TrashController extends Controller
     {
         $unit = Unit::withTrashed()->where('slug', $slug)->first();
         $unit->restore();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Unit restored successfully',
+        ]);
+    }
+
+    public function categoriesTrashed()
+    {
+        return view('dashboard.trashed.categories.index');
+    }
+
+    public function categoriesTrashedTable()
+    {
+        $categories = Category::onlyTrashed()->get();
+
+        return DataTables::of($categories)
+            ->addIndexColumn()
+            ->addColumn('action', function ($unit) {
+                $urlRestore = route('trash.categories.restore', $unit->slug);
+                return '
+                        <div class="row">
+                            <button class="btn btn-primary restore-item"
+                                    title="Restore unit"
+                                    data-url="' . $urlRestore . '"
+                                    data-name="' . $unit->name . '">
+                                <i class="fas fa-undo-alt"></i>
+                            </button>
+                        </div>
+                        ';
+            })
+            ->make();
+    }
+
+    public function categoriesRestore($slug)
+    {
+        $categories = Category::withTrashed()->where('slug', $slug)->first();
+        $categories->restore();
 
         return response()->json([
             'status' => true,

@@ -1,17 +1,23 @@
 <?php
 
-use App\Http\Controllers\{Category\CategoryController,
+use App\Http\Controllers\{
+    Category\CategoryController,
     Dashboard\DashboardController,
     Dashboard\ProductController,
     Dashboard\RolePermission\PermissionController,
     Dashboard\RolePermission\RoleController,
     Dashboard\TrashController,
     Dashboard\UserController,
-    IndexController};
+    IndexController
+};
 use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', IndexController::class)->name('index');
+Route::get('/symlink', function () {
+    Artisan::call('storage:link');
+    echo "ok";
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('user-by-role/{role}', [UserController::class, 'getUserByRole'])->name('users.by.role');
@@ -22,14 +28,16 @@ Route::middleware('auth')->group(function () {
         Route::resource("category", CategoryController::class)->parameters([
             'category' => 'slug'
         ]);
-        Route::get('categories-table', [CategoryController::class, 'getCategoriesTable']);
+
+        Route::get('categories-table', [CategoryController::class, 'categoriesTable'])->name('categories.table');
 
         Route::resource("unit", UnitController::class)->parameters([
             'unit' => 'slug'
         ]);
-        Route::get('units-table', [UnitController::class, 'getUnitsTable']);
 
-        Route::prefix('role-permission')->group(function() {
+        Route::get('units-table', [UnitController::class, 'unitsTable'])->name('units.table');
+
+        Route::prefix('role-permission')->group(function () {
 
             Route::resource('permissions', PermissionController::class)
                 ->except(['create']);
@@ -41,24 +49,25 @@ Route::middleware('auth')->group(function () {
                 Route::post('assign-role/{role}', [RoleController::class, 'assignRole'])->name('assign-role');
                 Route::delete('revoke-role/{role}', [RoleController::class, 'revokeRole'])->name('roles.user.revoke');
             });
-
         });
 
         Route::resource('products', ProductController::class)->parameters([
             'product' => 'slug'
         ]);
+
+
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
 
         Route::prefix('trash')->group(function () {
             Route::get('products', [TrashController::class, 'productsTrashed'])->name('trash.products');
             Route::get('products-trashed-table', [TrashController::class, 'productsTrashedTable'])->name('trash.products.table');
             Route::put('products/{slug}', [TrashController::class, 'productsRestore'])->name('trash.products.restore');
-        });
-
-        Route::prefix('trash')->group(function () {
             Route::get('units', [TrashController::class, 'unitsTrashed'])->name('trash.units');
             Route::get('units-trashed-table', [TrashController::class, 'unitsTrashedTable'])->name('trash.units.table');
             Route::put('units/{slug}', [TrashController::class, 'unitsRestore'])->name('trash.units.restore');
+            Route::get('categories', [TrashController::class, 'categoriesTrashed'])->name('trash.categories');
+            Route::get('categories-trashed-table', [TrashController::class, 'categoriesTrashedTable'])->name('trash.categories.table');
+            Route::put('categories/{slug}', [TrashController::class, 'categoriesRestore'])->name('trash.categories.restore');
         });
     });
 });

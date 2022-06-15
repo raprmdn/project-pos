@@ -99,17 +99,17 @@ class ProductController extends Controller
                 return $product->unit->name;
             })
             ->editColumn('product_picture', function ($product) {
-                return '<img src="' .  asset($product->product_picture) . '" alt="'.$product->name.'" class="img-thumbnail" width="100" height="100">';
+                return '<img src="' .  asset($product->product_picture) . '" alt="' . $product->name . '" class="img-thumbnail" width="100" height="100">';
             })
             ->addColumn('action', function ($product) {
                 $urlEdit = route('products.edit', $product->slug);
                 $urlDelete = route('products.destroy', $product->slug);
                 return '
                         <div class="row">
-                            <a href="' . $urlEdit . '" class="btn btn-primary btn-xs mr-2" title="Edit product">
+                            <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit product">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button class="btn btn-danger btn-xs delete-item"
+                            <button class="btn btn-danger delete-item"
                                     data-url="' . $urlDelete . '"
                                     data-name="' . $product->name . '">
                                 <i class="fas fa-trash"></i>

@@ -114,11 +114,36 @@ class UnitController extends Controller
     public function destroy(Unit $slug)
     {
         $slug->delete();
-        return redirect()->route('unit.index');
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted successfully'
+        ]);
     }
-    public function getUnitsTable()
+
+    public function unitsTable()
     {
-        $unit = Unit::all();
-        DataTables::of($unit)->make();
+        $units = Unit::all();
+        return DataTables::of($units)->addIndexColumn()->editColumn('created_at', function ($unit) {
+            return $unit->created_at->format('l j, F Y h:i:s A');
+        })->editColumn('updated_at', function ($unit) {
+            return $unit->updated_at->format('l j, F Y h:i:s A');
+        })->addColumn('action', function ($unit) {
+            $urlEdit = route('unit.edit', $unit->slug);
+            $urlDelete = route('unit.destroy', $unit->slug);
+            return '
+                    <div class="row">
+                        <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit unit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button class="btn btn-danger delete-item"
+                                data-url="' . $urlDelete . '"
+                                data-name="' . $unit->name . '">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    ';
+        })
+            ->rawColumns(['action'])
+            ->make();;
     }
 }

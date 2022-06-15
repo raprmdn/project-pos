@@ -114,11 +114,36 @@ class CategoryController extends Controller
     public function destroy(Category $slug)
     {
         $slug->delete();
-        return redirect()->route('category.index');
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted successfully'
+        ]);
     }
-    public function getCategoriesTable()
+
+    public function categoriesTable()
     {
-        $category = Category::all();
-        DataTables::of($category)->make();
+        $categories = Category::all();
+        return DataTables::of($categories)->addIndexColumn()->editColumn('created_at', function ($category) {
+            return $category->created_at->format('l j, F Y h:i:s A');
+        })->editColumn('updated_at', function ($category) {
+            return $category->updated_at->format('l j, F Y h:i:s A');
+        })->addColumn('action', function ($category) {
+            $urlEdit = route('category.edit', $category->slug);
+            $urlDelete = route('category.destroy', $category->slug);
+            return '
+                    <div class="row">
+                        <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit category">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button class="btn btn-danger delete-item"
+                                data-url="' . $urlDelete . '"
+                                data-name="' . $category->name . '">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    ';
+        })
+            ->rawColumns(['action'])
+            ->make();;
     }
 }

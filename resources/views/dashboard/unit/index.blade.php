@@ -10,6 +10,7 @@ $i = 1;
   <link rel="stylesheet"
     href="{{ asset('dashboardpage/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 @section('content')
   <div class="row">
@@ -22,7 +23,7 @@ $i = 1;
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover table-bordered dataTable">
+          <table class="table table-hover table-bordered" id="units-table">
             <thead>
               <tr>
                 <th>No</th>
@@ -33,27 +34,6 @@ $i = 1;
                 <th>Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              @foreach ($data as $d)
-                <tr>
-                  <td>{{ $i++ }}</td>
-                  <td>{{ $d->name }}</td>
-                  <td>{{ $d->slug }}</td>
-                  <td>{{ $d->created_at }}</td>
-                  <td>{{ $d->updated_at }}</td>
-                  <td>
-                    <form action="{{ route('unit.destroy', ['slug' => $d->slug]) }}" method="post"
-                      onsubmit="return confirm('Apakah ingin menghapus data?')">
-                      @csrf
-                      @method('DELETE')
-                      <a class="btn btn-warning" href="{{ route('unit.edit', ['slug' => $d->slug]) }}"><i
-                          class="fa-pencil-alt fas"></i></a>
-                      <button class="btn btn-danger" type="submit"><i class="fa-trash fas"></i></button>
-                    </form>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
           </table>
         </div>
       </div>
@@ -66,8 +46,85 @@ $i = 1;
     <script src="{{ asset('dashboardpage/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('dashboardpage/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('dashboardpage/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('dashboardpage/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
-      $(".dataTable").DataTable()
+      $(function() {
+        $('#units-table').DataTable({
+          responsive: true,
+          processing: true,
+          serverSide: true,
+          ajax: '{{ route('units.table') }}',
+          columns: [{
+              data: 'DT_RowIndex',
+              name: 'DT_RowIndex',
+              searchable: false,
+              orderable: false
+            },
+            {
+              data: 'name',
+              name: 'name'
+            },
+            {
+              data: 'slug',
+              name: 'slug'
+            },
+            {
+              data: 'created_at',
+              name: 'created_at'
+            },
+            {
+              data: 'updated_at',
+              name: 'updated_at'
+            },
+            {
+              data: 'action',
+              name: 'action',
+              orderable: false,
+              searchable: false
+            }
+          ]
+        });
+      });
+
+      $('#units-table').on('click', '.delete-item[data-url]', function() {
+        let url = $(this).data('url');
+        let name = $(this).data('name');
+
+        Swal.fire({
+          title: `Are you sure want delete "${name}"?`,
+          text: "Product not deleted permanently! But you can restore it from trash.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: url,
+              type: 'DELETE',
+              dataType: 'json',
+              data: {
+                method: 'DELETE',
+                _token: "{{ csrf_token() }}",
+                submit: true
+              }
+            }).always(function(data) {
+              if (data.status) {
+                Swal.fire({
+                  title: data.message,
+                  icon: 'success'
+                }).then(function() {
+                  $('#units-table').DataTable().draw();
+                });
+              } else {
+                Swal.fire({
+                  title: data.message,
+                  icon: 'error'
+                });
+              }
+            });
+          }
+        });
+      });
     </script>
   @endpush
 @endsection
