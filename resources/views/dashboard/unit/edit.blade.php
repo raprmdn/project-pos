@@ -9,7 +9,7 @@
         <div class="card-header">
           <h3 class="card-title">Ubah Unit</h3>
         </div>
-        <form method="post" action="{{ route('unit.update', ['slug' => $data->slug]) }}">
+        <form method="post" action="{{ route('unit.update', $data->slug) }}">
           @csrf
           @method('PUT')
           <div class="card-body">

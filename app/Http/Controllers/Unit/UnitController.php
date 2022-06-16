@@ -74,9 +74,9 @@ class UnitController extends Controller
      * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function edit(Unit $slug)
+    public function edit(Unit $unit)
     {
-        return view('dashboard.unit.edit', ['data' => $slug]);
+        return view('dashboard.unit.edit', ['data' => $unit]);
     }
 
     /**
@@ -86,7 +86,7 @@ class UnitController extends Controller
      * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Unit $slug)
+    public function update(Request $request, Unit $unit)
     {
         $request['slug'] = Str::slug($request['name']);
         $validator = Validator::make($request->all(), [
@@ -94,29 +94,30 @@ class UnitController extends Controller
             'slug' => 'required'
         ]);
         if ($validator->fails()) {
-            return redirect()->route('unit.edit', ['slug' => $slug->slug])->withErrors($validator)->withInput();
+            return redirect()->route('unit.edit', ['slug' => $unit->slug])->withErrors($validator)->withInput();
         }
         $validated = $validator->validated();
         try {
-            $slug->update($validated);
+            $unit->update($validated);
             return redirect()->route('unit.index');
         } catch (\Throwable $th) {
             dd($th);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Unit  $unit
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Unit $slug)
+    public function destroy(Unit $unit)
     {
-        $slug->delete();
+        if ($unit->product()->exists()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unit has related to product, can not delete this unit'
+            ]);
+        }
+        $unit->delete();
+
         return response()->json([
             'status' => true,
-            'message' => 'Product deleted successfully'
+            'message' => 'Unit deleted successfully'
         ]);
     }
 

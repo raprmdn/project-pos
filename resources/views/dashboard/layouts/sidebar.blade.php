@@ -7,13 +7,13 @@ $menus = [
                 'name' => 'Kategori',
                 'route' => 'category.index',
                 'icon' => 'fa fa-cube',
-                'active' => request()->segment(2) == 'category',
+                'active' => request()->segment(2) == 'categories',
             ],
             [
                 'name' => 'Unit',
                 'route' => 'unit.index',
                 'icon' => 'fa fa-cube',
-                'active' => request()->segment(2) == 'unit',
+                'active' => request()->segment(2) == 'units',
             ],
             [
                 'name' => 'Produk',

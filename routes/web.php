@@ -25,13 +25,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('dashboard')->group(function () {
-        Route::resource("category", CategoryController::class)->parameters([
+        Route::resource("categories", CategoryController::class, ['names' => 'category'])->parameters([
             'category' => 'slug'
         ]);
 
         Route::get('categories-table', [CategoryController::class, 'categoriesTable'])->name('categories.table');
 
-        Route::resource("unit", UnitController::class)->parameters([
+        Route::resource("units", UnitController::class, ['names' => 'unit'])->parameters([
             'unit' => 'slug'
         ]);
 
@@ -54,7 +54,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('products', ProductController::class)->parameters([
             'product' => 'slug'
         ]);
-
 
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
 

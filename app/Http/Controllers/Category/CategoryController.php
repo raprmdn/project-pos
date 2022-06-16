@@ -68,15 +68,10 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $slug)
+
+    public function edit(Category $category)
     {
-        return view('dashboard.category.edit', ['data' => $slug]);
+        return view('dashboard.category.edit', ['data' => $category]);
     }
 
     /**
@@ -86,7 +81,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $slug)
+    public function update(Request $request, Category $category)
     {
         $request['slug'] = Str::slug($request['name']);
         $validator = Validator::make($request->all(), [
@@ -94,29 +89,30 @@ class CategoryController extends Controller
             'slug' => 'required'
         ]);
         if ($validator->fails()) {
-            return redirect()->route('category.edit', ['slug' => $slug->slug])->withErrors($validator)->withInput();
+            return redirect()->route('category.edit', ['slug' => $category->slug])->withErrors($validator)->withInput();
         }
         $validated = $validator->validated();
         try {
-            $slug->update($validated);
+            $category->update($validated);
             return redirect()->route('category.index');
         } catch (\Throwable $th) {
             dd($th);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Category $slug)
+    public function destroy(Category $category)
     {
-        $slug->delete();
+        if ($category->product()->exists()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Category has related to product, can not delete this category'
+            ]);
+        }
+        $category->delete();
+
         return response()->json([
             'status' => true,
-            'message' => 'Product deleted successfully'
+            'message' => 'Category deleted successfully'
         ]);
     }
 

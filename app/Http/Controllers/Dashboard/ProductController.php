@@ -33,9 +33,14 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $picture = $request->file('product_image');
         $request['slug'] = Str::slug($request->product_name) . '-' . Str::random(4);
-        $request['image'] = $this->assignPicture('products/image', $picture, $request['slug']);
+        if ($request->hasFile('product_image')) {
+            $picture = $request->file('product_image');
+            $request['image'] = $this->assignPicture('products/image', $picture, $request['slug']);
+        } else {
+            $request['image'] = null;
+        }
+
         $request['barcode'] = rand(100000000, 999999999);
         Product::create($this->_fields($request->all()));
 
@@ -60,7 +65,9 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('product_image')) {
-            Storage::delete($product->picture);
+            if ($product->picture) {
+                Storage::delete($product->picture);
+            }
             $picture = $request->file('product_image');
             $request['image'] = $this->assignPicture('products/image', $picture, $request['slug']);
         } else {
@@ -93,13 +100,17 @@ class ProductController extends Controller
                 return 'Rp. ' . Helper::rupiahFormat($product->price) . ',-';
             })
             ->editColumn('category', function ($product) {
-                return $product->category->name;
+                return $product->category->name ?? '';
             })
             ->editColumn('unit', function ($product) {
-                return $product->unit->name;
+                return $product->unit->name ?? '';
             })
             ->editColumn('product_picture', function ($product) {
-                return '<img src="' .  asset($product->product_picture) . '" alt="' . $product->name . '" class="img-thumbnail" width="100" height="100">';
+                if ($product->picture) {
+                    return '<img src="' .  asset($product->product_picture) . '" alt="' . $product->name . '" class="img-thumbnail" width="100" height="100">';
+                } else {
+                    return "Image not available";
+                }
             })
             ->addColumn('action', function ($product) {
                 $urlEdit = route('products.edit', $product->slug);

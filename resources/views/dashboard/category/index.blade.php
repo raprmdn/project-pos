@@ -92,7 +92,7 @@ $i = 1;
 
         Swal.fire({
           title: `Are you sure want delete "${name}"?`,
-          text: "Product not deleted permanently! But you can restore it from trash.",
+          text: "Category not deleted permanently! But you can restore it from trash.",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, delete it!',
