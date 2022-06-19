@@ -8,8 +8,9 @@ use App\Http\Controllers\{
     Dashboard\RolePermission\RoleController,
     Dashboard\TrashController,
     Dashboard\UserController,
-    IndexController
+    IndexController,
 };
+use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,12 @@ Route::middleware('auth')->group(function () {
         ]);
 
         Route::get('units-table', [UnitController::class, 'unitsTable'])->name('units.table');
+
+        Route::resource("suppliers", SupplierController::class)->parameters([
+            'supplier' => 'slug'
+        ]);
+
+        Route::get("suppliers-table", [SupplierController::class, 'suppliersTable'])->name('suppliers.table');
 
         Route::prefix('role-permission')->group(function () {
 
