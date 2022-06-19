@@ -23,7 +23,7 @@ $menus = [
             ],
             [
                 'name' => 'Supplier',
-                'route' => '',
+                'route' => 'suppliers.index',
                 'icon' => 'fa fa-truck',
                 'active' => false,
             ],

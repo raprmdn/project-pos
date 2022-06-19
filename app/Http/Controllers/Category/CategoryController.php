@@ -140,6 +140,6 @@ class CategoryController extends Controller
                     ';
         })
             ->rawColumns(['action'])
-            ->make();;
+            ->make();
     }
 }
