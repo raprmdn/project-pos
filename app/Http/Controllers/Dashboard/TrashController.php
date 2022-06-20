@@ -36,17 +36,7 @@ class TrashController extends Controller
                 return '<img src="' .  asset($product->product_picture) . '" alt="' . $product->name . '" class="img-thumbnail" width="100" height="100">';
             })
             ->addColumn('action', function ($product) {
-                $urlRestore = route('trash.products.restore', $product->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore product"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $product->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.product', compact('product'));
             })
             ->rawColumns(['action', 'product_picture'])
             ->make();
@@ -75,17 +65,7 @@ class TrashController extends Controller
         return DataTables::of($units)
             ->addIndexColumn()
             ->addColumn('action', function ($unit) {
-                $urlRestore = route('trash.units.restore', $unit->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore unit"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $unit->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.unit', compact('unit'));
             })
             ->make();
     }
@@ -113,17 +93,7 @@ class TrashController extends Controller
         return DataTables::of($categories)
             ->addIndexColumn()
             ->addColumn('action', function ($unit) {
-                $urlRestore = route('trash.categories.restore', $unit->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore category"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $unit->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.category', compact('unit'));
             })
             ->make();
     }
@@ -151,17 +121,7 @@ class TrashController extends Controller
         return DataTables::of($suppliers)
             ->addIndexColumn()
             ->addColumn('action', function ($supplier) {
-                $urlRestore = route('trash.suppliers.restore', $supplier->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore supplier"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $supplier->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.supplier', compact('supplier'));
             })
             ->make();
     }

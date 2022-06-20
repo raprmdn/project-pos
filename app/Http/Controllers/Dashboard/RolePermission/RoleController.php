@@ -7,6 +7,7 @@ use App\Http\Requests\RoleRequest;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
@@ -86,5 +87,25 @@ class RoleController extends Controller
             'status' => true,
             'message' => 'Role revoked successfully.',
         ]);
+    }
+
+    public function usersTable(Role $role)
+    {
+        $data = $role->load('users');
+        $users = $data->users;
+
+        return DataTables::of($users)
+            ->addIndexColumn()
+            ->addColumn('action', function ($user) {
+                return '
+                        <button class="btn btn-danger btn-xs delete-item"
+                                data-name="' . $user->name . '"
+                                data-id="' . $user->id . '">
+                            Revoke
+                        </button>
+                        ';
+            })
+            ->rawColumns(['action'])
+            ->make();
     }
 }

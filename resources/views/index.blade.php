@@ -1,7 +1,7 @@
 @extends('landingpage.layouts.app')
 
 @section('content')
-    
+
     <section class="welcome-area">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
   <div class="carousel-indicators">
@@ -10,12 +10,12 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-    <img src="{{ asset('landingpage/assets/img/hero-carousel/cv.PNG') }}" class="img-fluid animated">
+    <img src="{{ asset('landingpage/assets/img/hero-carousel/cv.png') }}" class="img-fluid animated">
       <div class="carousel-caption d-none d-md-block">
       </div>
     </div>
     <div class="carousel-item">
-    <img src="{{ asset('landingpage/assets/img/hero-carousel/ban.PNG') }}" class="img-fluid animated">
+    <img src="{{ asset('landingpage/assets/img/hero-carousel/ban.png') }}" class="img-fluid animated">
       <div class="carousel-caption d-none d-md-block">
       </div>
     </div>
@@ -41,7 +41,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                <img src="{{ asset('landingpage/assets/img/hero-carousel/hot.PNG') }}" class="img-fluid animated">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/hot.png') }}" class="img-fluid animated">
                                     <h4 class="card-title">Promo Gantung</h4>
                                     <p class="card-text">Dapatkan potongan dengan membeli e-money</p>
                                     <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -59,7 +59,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                <img src="{{ asset('landingpage/assets/img/hero-carousel/sr.JPG') }}" class="img-fluid animated">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/sr.jpg') }}" class="img-fluid animated">
                                     <h4 class="card-title">Serba Gratis</h4>
                                     <p class="card-text">Enjoy Setiap Hari</p>
                                     <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -77,7 +77,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                <img src="{{ asset('landingpage/assets/img/hero-carousel/cbck.PNG') }}" class="img-fluid animated">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/cbck.png') }}" class="img-fluid animated">
                                     <h4 class="card-title">Member Baru</h4>
                                     <p class="card-text">Dapatkan diskon dan bergabung bersama kami</p>
                                     <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -95,7 +95,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                <img src="{{ asset('landingpage/assets/img/hero-carousel/ngt.PNG') }}" class="img-fluid animated">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/ngt.png') }}" class="img-fluid animated">
                                     <h4 class="card-title">Nuget Crispy</h4>
                                     <p class="card-text">Disini tersedia juga loh Nugget yang crispy</p>
                                     <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -113,7 +113,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                <img src="{{ asset('landingpage/assets/img/hero-carousel/BK.PNG') }}" class="img-fluid animated">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/BK.png') }}" class="img-fluid animated">
                                     <h4 class="card-title">Berbuka</h4>
                                     <p class="card-text">Berbuka bersama jadi makin seru.</p>
                                     <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -131,7 +131,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                <img src="{{ asset('landingpage/assets/img/hero-carousel/b1.PNG') }}" class="img-fluid animated">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/b1.png') }}" class="img-fluid animated">
                                     <h4 class="card-title">By One Get One</h4>
                                     <p class="card-text">Hanya tersedia di toko kami</p>
                                     <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -279,7 +279,7 @@
             </div>
         </section>
 
-        
+
 
         <section id="features" class="features">
             <div class="container" data-aos="fade-up">
