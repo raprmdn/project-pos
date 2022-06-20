@@ -19,7 +19,9 @@ $i = 1;
         <div class="card-header">
           <div class="d-flex justify-content-between align-items-center">
             <h2 class="">Daftar Unit</h2>
-            <a href="{{ route('unit.create') }}" class="btn btn-primary">Tambah Unit</a>
+              @can('create-unit')
+                  <a href="{{ route('unit.create') }}" class="btn btn-primary">Tambah Unit</a>
+              @endcan
           </div>
         </div>
         <div class="card-body">

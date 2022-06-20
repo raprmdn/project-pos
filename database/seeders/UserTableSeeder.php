@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UserTableSeeder extends Seeder
 {
     public function run()
     {
-        collect([
+        $users = collect([
             [
                 'name' => 'Qoidurrahman Haqiqi',
                 'email' => 'kiki@email.com',
@@ -38,8 +38,34 @@ class UserTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ])->each(function ($user) {
-            DB::table('users')->insert($user);
+        ]);
+
+        $users->each(function ($user) {
+            User::create($user)->syncRoles('administrator');
         });
+
+        User::create([
+            'name' => 'User Staff',
+            'email' => 'staff@email.com',
+            'password' => bcrypt('123123123'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ])->syncRoles('staff');
+
+        User::create([
+            'name' => 'User Cashier',
+            'email' => 'cashier@email.com',
+            'password' => bcrypt('123123123'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ])->syncRoles('cashier');
+
+        User::create([
+            'name' => 'User',
+            'email' => 'user@email.com',
+            'password' => bcrypt('123123123'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ])->syncRoles('user');
     }
 }

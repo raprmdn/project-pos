@@ -1,6 +1,7 @@
 @extends('landingpage.layouts.app')
 
 @section('content')
+<<<<<<< HEAD
   <section class="welcome-area">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
       <div class="carousel-indicators">
@@ -30,6 +31,24 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
+=======
+
+    <section class="welcome-area">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+    <img src="{{ asset('landingpage/assets/img/hero-carousel/cv.png') }}" class="img-fluid animated">
+      <div class="carousel-caption d-none d-md-block">
+      </div>
+    </div>
+    <div class="carousel-item">
+    <img src="{{ asset('landingpage/assets/img/hero-carousel/ban.png') }}" class="img-fluid animated">
+      <div class="carousel-caption d-none d-md-block">
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
       </div>
   </section>
   <main id="main">
@@ -37,6 +56,7 @@
       <div class="container">
         <h1 align="center" class="section-title h1">Promo & Program</h1>
         <div class="row">
+<<<<<<< HEAD
           <!-- Team member -->
           <div class="col-xs-12 col-sm-6 col-md-4">
             <div class="image-flip">
@@ -49,11 +69,28 @@
                       <p class="card-text">Dapatkan potongan dengan membeli e-money</p>
                       <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i
                           class="fa fa-plus"></i></a>
+=======
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" >
+                    <div class="mainflip flip-0">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/hot.png') }}" class="img-fluid animated">
+                                    <h4 class="card-title">Promo Gantung</h4>
+                                    <p class="card-text">Dapatkan potongan dengan membeli e-money</p>
+                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           </div>
           <!-- ./Team member -->
           <!-- Team member -->
@@ -68,11 +105,29 @@
                       <p class="card-text">Enjoy Setiap Hari</p>
                       <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i
                           class="fa fa-plus"></i></a>
+=======
+            <!-- ./Team member -->
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/sr.jpg') }}" class="img-fluid animated">
+                                    <h4 class="card-title">Serba Gratis</h4>
+                                    <p class="card-text">Enjoy Setiap Hari</p>
+                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           </div>
           <!-- ./Team member -->
           <!-- Team member -->
@@ -88,11 +143,29 @@
                       <p class="card-text">Dapatkan diskon dan bergabung bersama kami</p>
                       <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i
                           class="fa fa-plus"></i></a>
+=======
+            <!-- ./Team member -->
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/cbck.png') }}" class="img-fluid animated">
+                                    <h4 class="card-title">Member Baru</h4>
+                                    <p class="card-text">Dapatkan diskon dan bergabung bersama kami</p>
+                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           </div>
           <!-- ./Team member -->
           <!-- Team member -->
@@ -107,11 +180,29 @@
                       <p class="card-text">Disini tersedia juga loh Nugget yang crispy</p>
                       <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i
                           class="fa fa-plus"></i></a>
+=======
+            <!-- ./Team member -->
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/ngt.png') }}" class="img-fluid animated">
+                                    <h4 class="card-title">Nuget Crispy</h4>
+                                    <p class="card-text">Disini tersedia juga loh Nugget yang crispy</p>
+                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           </div>
           <!-- ./Team member -->
           <!-- Team member -->
@@ -127,11 +218,29 @@
                       <p class="card-text">Berbuka bersama jadi makin seru.</p>
                       <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i
                           class="fa fa-plus"></i></a>
+=======
+            <!-- ./Team member -->
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/BK.png') }}" class="img-fluid animated">
+                                    <h4 class="card-title">Berbuka</h4>
+                                    <p class="card-text">Berbuka bersama jadi makin seru.</p>
+                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
           </div>
           <!-- ./Team member -->
           <!-- Team member -->
@@ -147,6 +256,23 @@
                       <p class="card-text">Hanya tersedia di toko kami</p>
                       <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i
                           class="fa fa-plus"></i></a>
+=======
+            <!-- ./Team member -->
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                <img src="{{ asset('landingpage/assets/img/hero-carousel/b1.png') }}" class="img-fluid animated">
+                                    <h4 class="card-title">By One Get One</h4>
+                                    <p class="card-text">Hanya tersedia di toko kami</p>
+                                    <a href="https://www.fiverr.com/share/qb8D02" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
                     </div>
                   </div>
                 </div>
@@ -202,6 +328,7 @@
                 <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi
                   dolorum non eveniet magni quaerat nemo et.</p>
 
+<<<<<<< HEAD
                 <div class="d-flex align-items-center mt-4">
                   <i class="bi bi-check2"></i>
                   <h4>Incidunt non veritatis illum ea ut nisi</h4>
@@ -209,6 +336,59 @@
                 <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur.
                   Iure molestiae assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo
                   tempora. Quia et perferendis.</p>
+=======
+            </div>
+        </section>
+
+
+
+        <section id="features" class="features">
+            <div class="container" data-aos="fade-up">
+
+                <ul class="nav nav-tabs row gy-4 d-flex">
+
+                    <li class="nav-item col-6 col-md-4 col-lg-2">
+                        <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#tab-1">
+                            <i class="bi bi-binoculars color-cyan"></i>
+                            <h4>Modinest</h4>
+                        </a>
+                    </li><!-- End Tab 1 Nav -->
+
+                    <li class="nav-item col-6 col-md-4 col-lg-2">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-2">
+                            <i class="bi bi-box-seam color-indigo"></i>
+                            <h4>Undaesenti</h4>
+                        </a>
+                    </li><!-- End Tab 2 Nav -->
+
+                    <li class="nav-item col-6 col-md-4 col-lg-2">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-3">
+                            <i class="bi bi-brightness-high color-teal"></i>
+                            <h4>Pariatur</h4>
+                        </a>
+                    </li><!-- End Tab 3 Nav -->
+
+                    <li class="nav-item col-6 col-md-4 col-lg-2">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-4">
+                            <i class="bi bi-command color-red"></i>
+                            <h4>Nostrum</h4>
+                        </a>
+                    </li><!-- End Tab 4 Nav -->
+
+                    <li class="nav-item col-6 col-md-4 col-lg-2">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-5">
+                            <i class="bi bi-easel color-blue"></i>
+                            <h4>Adipiscing</h4>
+                        </a>
+                    </li><!-- End Tab 5 Nav -->
+
+                    <li class="nav-item col-6 col-md-4 col-lg-2">
+                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-6">
+                            <i class="bi bi-map color-orange"></i>
+                            <h4>Reprehit</h4>
+                        </a>
+                    </li><!-- End Tab 6 Nav -->
+>>>>>>> 6965bbd77534848430e9e3235b50c1d9420650c4
 
                 <div class="d-flex align-items-center mt-4">
                   <i class="bi bi-check2"></i>

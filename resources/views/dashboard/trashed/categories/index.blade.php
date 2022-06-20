@@ -89,7 +89,7 @@
         },
       }).always(function() {
         Swal.fire({
-          title: 'Unit " ' + name + ' " has been restored',
+          title: 'Category " ' + name + ' " has been restored',
           icon: 'success',
         });
         $('#units-table').DataTable().ajax.reload();

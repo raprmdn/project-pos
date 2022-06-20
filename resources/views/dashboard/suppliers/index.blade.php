@@ -19,7 +19,9 @@ $i = 1;
         <div class="card-header">
           <div class="d-flex justify-content-between align-items-center">
             <h2 class="">Daftar Supplier</h2>
-            <a href="{{ route('suppliers.create') }}" class="btn btn-primary">Tambah Supplier</a>
+            @can('create-supplier')
+                  <a href="{{ route('suppliers.create') }}" class="btn btn-primary">Tambah Supplier</a>
+            @endcan
           </div>
         </div>
         <div class="card-body">

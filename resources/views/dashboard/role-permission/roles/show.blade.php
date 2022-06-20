@@ -126,7 +126,7 @@
                 responsive: true,
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('users.by.role', [$role->id]) }}',
+                ajax: '{{ route('roles.users.table', [$role->id]) }}',
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false },
                     { data: 'name', name: 'name' },

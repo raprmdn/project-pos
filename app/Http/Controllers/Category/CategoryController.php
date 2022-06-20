@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view-category', ['only' => ['index', 'categoriesTable']]);
+        $this->middleware('permission:create-category', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit-category', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-category', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -124,20 +132,7 @@ class CategoryController extends Controller
         })->editColumn('updated_at', function ($category) {
             return $category->updated_at->format('l j, F Y h:i:s A');
         })->addColumn('action', function ($category) {
-            $urlEdit = route('category.edit', $category->slug);
-            $urlDelete = route('category.destroy', $category->slug);
-            return '
-                    <div class="row">
-                        <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit category">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn btn-danger delete-item"
-                                data-url="' . $urlDelete . '"
-                                data-name="' . $category->name . '">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    ';
+            return view('dashboard.actions.category', compact('category'));
         })
             ->rawColumns(['action'])
             ->make();
