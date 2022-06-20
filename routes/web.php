@@ -74,6 +74,9 @@ Route::middleware('auth')->group(function () {
             Route::get('categories', [TrashController::class, 'categoriesTrashed'])->name('trash.categories');
             Route::get('categories-trashed-table', [TrashController::class, 'categoriesTrashedTable'])->name('trash.categories.table');
             Route::put('categories/{slug}', [TrashController::class, 'categoriesRestore'])->name('trash.categories.restore');
+            Route::get('suppliers', [TrashController::class, 'suppliersTrashed'])->name('trash.suppliers');
+            Route::get('suppliers-trashed-table', [TrashController::class, 'suppliersTrashedTable'])->name('trash.suppliers.table');
+            Route::put('suppliers/{slug}', [TrashController::class, 'suppliersRestore'])->name('trash.suppliers.restore');
         });
     });
 });

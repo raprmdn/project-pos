@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
+use App\Models\Supplier;
 use Yajra\DataTables\DataTables;
 
 class TrashController extends Controller
@@ -116,7 +117,7 @@ class TrashController extends Controller
                 return '
                         <div class="row">
                             <button class="btn btn-primary restore-item"
-                                    title="Restore unit"
+                                    title="Restore category"
                                     data-url="' . $urlRestore . '"
                                     data-name="' . $unit->name . '">
                                 <i class="fas fa-undo-alt"></i>
@@ -134,7 +135,45 @@ class TrashController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Unit restored successfully',
+            'message' => 'Category restored successfully',
+        ]);
+    }
+
+    public function suppliersTrashed()
+    {
+        return view('dashboard.trashed.suppliers.index');
+    }
+
+    public function suppliersTrashedTable()
+    {
+        $suppliers = Supplier::onlyTrashed()->get();
+
+        return DataTables::of($suppliers)
+            ->addIndexColumn()
+            ->addColumn('action', function ($supplier) {
+                $urlRestore = route('trash.suppliers.restore', $supplier->slug);
+                return '
+                        <div class="row">
+                            <button class="btn btn-primary restore-item"
+                                    title="Restore supplier"
+                                    data-url="' . $urlRestore . '"
+                                    data-name="' . $supplier->name . '">
+                                <i class="fas fa-undo-alt"></i>
+                            </button>
+                        </div>
+                        ';
+            })
+            ->make();
+    }
+
+    public function suppliersRestore($slug)
+    {
+        $supplier = Supplier::withTrashed()->where('slug', $slug)->first();
+        $supplier->restore();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Supplier restored successfully',
         ]);
     }
 }

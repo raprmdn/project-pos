@@ -101,6 +101,12 @@ $menus = [
                 'icon' => 'fas fa-trash-alt',
                 'active' => request()->segment(3) == 'units',
             ],
+            [
+                'name' => 'Suppliers Trash',
+                'route' => 'trash.suppliers',
+                'icon' => 'fas fa-trash-alt',
+                'active' => request()->segment(3) == 'suppliers',
+            ],
         ],
     ],
     [
