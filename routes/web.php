@@ -86,8 +86,7 @@ Route::middleware('auth')->group(function () {
                 ->middleware(['permission:restore-supplier']);
         });
 
-        Route::get('users', [UserController::class, 'index'])->name('users.index')
-            ->middleware(['permission:view-users']);
+        Route::resource('users', UserController::class)->only(['index', 'create', 'store'])->middleware(['permission:view-users']);
         Route::get('users-table', [UserController::class, 'userTableWithRoles'])->name('users.index.table');
     });
 });
