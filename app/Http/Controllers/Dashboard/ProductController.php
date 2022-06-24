@@ -93,6 +93,12 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        if ($product->sale_details()->exists()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product has related to sale, can not delete this product'
+            ]);
+        }
         $product->delete();
 
         return response()->json([
@@ -103,7 +109,6 @@ class ProductController extends Controller
     public function generatePDF()
     {
         $data = Product::with(['unit', 'category'])->latest()->get();
-
         $pdf = PDF::loadView('dashboard.products.mypdf', compact('data'));
 
         return $pdf->download('product.pdf');
@@ -140,6 +145,25 @@ class ProductController extends Controller
                 return view('dashboard.actions.product', compact('product'));
             })
             ->rawColumns(['action', 'product_picture'])
+            ->make();
+    }
+
+    public function selectProducts()
+    {
+        $products = Product::with('category:id,name')->latest()->get();
+
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->editColumn('category', function ($product) {
+                return $product->category->name ?? '';
+            })
+            ->editColumn('price', function ($product) {
+                return 'Rp. ' . Helper::rupiahFormat($product->price) . ',-';
+            })
+            ->addColumn('action', function ($product) {
+                return view('dashboard.actions.select-product', compact('product'));
+            })
+            ->rawColumns(['category', 'price', 'action'])
             ->make();
     }
 

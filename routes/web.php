@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\{
-    Category\CategoryController,
+use App\Http\Controllers\{Category\CategoryController,
     Dashboard\DashboardController,
     Dashboard\ProductController,
     Dashboard\RolePermission\PermissionController,
     Dashboard\RolePermission\RoleController,
+    Dashboard\SaleController,
+    Dashboard\TransactionController,
     Dashboard\TrashController,
     Dashboard\UserController,
-    IndexController,
-};
+    IndexController};
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +46,23 @@ Route::middleware('auth')->group(function () {
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
         Route::get('generate-pdf', [ProductController::class, 'generatePDF'])->name('product.pdf');
         Route::get('generate-excel', [ProductController::class, 'generateExcel'])->name('product.excel');
+
+        Route::prefix('sales')->middleware(['permission:view-sales'])->group(function () {
+            Route::get('', [SaleController::class, 'index'])->name('sales.index');
+            Route::get('{sale:uuid}', [SaleController::class, 'show'])->name('sales.show');
+            Route::get('{sale:uuid}/detail-table', [SaleController::class, 'salesDetailTable'])->name('sales.detail.table');
+        });
+        Route::get('sales-table', [SaleController::class, 'salesTable'])->name('sales.table')
+            ->middleware(['permission:view-sales']);
+
+        Route::prefix('transactions')->middleware(['permission:create-transaction'])->group(function () {
+            Route::get('', [TransactionController::class, 'create'])->name('transactions.create');
+            Route::get('{sale:uuid}', [TransactionController::class, 'index'])->name('transactions.index');
+            Route::get('{sale:uuid}/sale-detail', [TransactionController::class, 'getSaleProductDetail'])->name('transactions.sale-detail');
+            Route::put('{sale:uuid}/save-transaction', [TransactionController::class, 'saveTransaction'])->name('transactions.save');
+            Route::delete('{sale:uuid}/cancel-transaction', [TransactionController::class, 'cancelTransaction'])->name('transactions.cancel');
+        });
+        Route::get('select-products', [ProductController::class, 'selectProducts'])->name('select.products');
 
         Route::prefix('role-permission')->group(function () {
             Route::group(['middleware' => 'permission:view-permissions'], function () {

@@ -32,7 +32,7 @@ class UserTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Muhammad Yusuf Hijrah',
+                'name' => 'Muhammad Yusuf Hijriah',
                 'email' => 'yusuf@email.com',
                 'password' => bcrypt('123123123'),
                 'created_at' => now(),

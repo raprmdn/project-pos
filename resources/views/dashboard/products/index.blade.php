@@ -29,11 +29,30 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4>Products</h4>
-                        <a href="{{ route('product.pdf') }}" class="btn btn-primary">Export PDF</a>
-                        <a href="{{ route('product.excel') }}" class="btn btn-primary">Export Excel</a>
-                        @can('create-product')
-                            <a href="{{ route('products.create') }}" class="btn btn-primary">Tambah Product</a>
-                        @endcan
+                        <div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success">
+                                    <i class="fas fa-file-export mr-1"></i>
+                                    Export
+                                </button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu" role="menu" style="">
+                                    <a class="dropdown-item" href="{{ route('product.pdf') }}">
+                                        <i class="fas fa-file-pdf mr-1"></i>
+                                        Export PDF
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('product.excel') }}">
+                                        <i class="fas fa-file-excel mr-1"></i>
+                                        Export Excel
+                                    </a>
+                                </div>
+                            </div>
+                            @can('create-product')
+                                <a href="{{ route('products.create') }}" class="btn btn-primary">Tambah Product</a>
+                            @endcan
+                        </div>
                     </div>
 
                 </div>
@@ -112,15 +131,14 @@
                             Swal.fire({
                                 title: data.message,
                                 icon: 'success'
-                            }).then(function () {
-                                $('#products-table').DataTable().draw();
-                            });
+                            })
                         } else {
                             Swal.fire({
                                 title: data.message,
                                 icon: 'error'
                             });
                         }
+                        $('#products-table').DataTable().draw();
                     });
                 }
             });
