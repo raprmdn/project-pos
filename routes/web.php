@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
         ]);
 
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
+        Route::get('generate-pdf', [ProductController::class, 'generatePDF'])->name('product.pdf');
 
         Route::prefix('trash')->group(function () {
             Route::get('products', [TrashController::class, 'productsTrashed'])->name('trash.products');

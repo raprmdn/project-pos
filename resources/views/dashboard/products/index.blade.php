@@ -30,7 +30,9 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h4>Products</h4>
                         <a href="{{ route('products.create') }}" class="btn btn-primary">Tambah Product</a>
+                        <a href="{{ route('product.pdf') }}" class="btn btn-primary">Export PDF</a>
                     </div>
+                    
                 </div>
                 <div class="card-body">
                     <table class="table table-hover" id="products-table">
@@ -52,6 +54,7 @@
             </div>
         </div>
     </div>
+    
 @endsection
 
 @push('scripts')

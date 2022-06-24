@@ -12,6 +12,7 @@ use App\Traits\ImageTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
+use PDF;
 
 class ProductController extends Controller
 {
@@ -88,6 +89,14 @@ class ProductController extends Controller
             'status' => true,
             'message' => 'Product deleted successfully'
         ]);
+    }
+    public function generatePDF()
+    {
+        $data = Product::with(['unit', 'category'])->latest()->get();
+        
+        $pdf = PDF::loadView('dashboard.products.mypdf', compact('data'));
+
+        return $pdf->download('product.pdf');
     }
 
     public function productsTable()
