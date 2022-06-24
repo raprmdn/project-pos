@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view-supplier', ['only' => ['index', 'suppliersTable']]);
+        $this->middleware('permission:create-supplier', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit-supplier', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-supplier', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -126,20 +134,7 @@ class SupplierController extends Controller
     {
         $suppliers = Supplier::all();
         return DataTables::of($suppliers)->addIndexColumn()->addColumn('action', function ($supplier) {
-            $urlEdit = route('suppliers.edit', $supplier->slug);
-            $urlDelete = route('suppliers.destroy', $supplier->slug);
-            return '
-                    <div class="row">
-                        <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit supplier">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn btn-danger delete-item"
-                                data-url="' . $urlDelete . '"
-                                data-name="' . $supplier->name . '">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    ';
+            return view('dashboard.actions.supplier', compact('supplier'));
         })
             ->rawColumns(['action'])
             ->make();

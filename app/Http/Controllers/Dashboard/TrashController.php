@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
+use App\Models\Supplier;
 use Yajra\DataTables\DataTables;
 
 class TrashController extends Controller
@@ -35,17 +36,7 @@ class TrashController extends Controller
                 return '<img src="' .  asset($product->product_picture) . '" alt="' . $product->name . '" class="img-thumbnail" width="100" height="100">';
             })
             ->addColumn('action', function ($product) {
-                $urlRestore = route('trash.products.restore', $product->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore product"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $product->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.product', compact('product'));
             })
             ->rawColumns(['action', 'product_picture'])
             ->make();
@@ -74,17 +65,7 @@ class TrashController extends Controller
         return DataTables::of($units)
             ->addIndexColumn()
             ->addColumn('action', function ($unit) {
-                $urlRestore = route('trash.units.restore', $unit->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore unit"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $unit->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.unit', compact('unit'));
             })
             ->make();
     }
@@ -112,17 +93,7 @@ class TrashController extends Controller
         return DataTables::of($categories)
             ->addIndexColumn()
             ->addColumn('action', function ($unit) {
-                $urlRestore = route('trash.categories.restore', $unit->slug);
-                return '
-                        <div class="row">
-                            <button class="btn btn-primary restore-item"
-                                    title="Restore unit"
-                                    data-url="' . $urlRestore . '"
-                                    data-name="' . $unit->name . '">
-                                <i class="fas fa-undo-alt"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.trash.category', compact('unit'));
             })
             ->make();
     }
@@ -134,7 +105,35 @@ class TrashController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Unit restored successfully',
+            'message' => 'Category restored successfully',
+        ]);
+    }
+
+    public function suppliersTrashed()
+    {
+        return view('dashboard.trashed.suppliers.index');
+    }
+
+    public function suppliersTrashedTable()
+    {
+        $suppliers = Supplier::onlyTrashed()->get();
+
+        return DataTables::of($suppliers)
+            ->addIndexColumn()
+            ->addColumn('action', function ($supplier) {
+                return view('dashboard.actions.trash.supplier', compact('supplier'));
+            })
+            ->make();
+    }
+
+    public function suppliersRestore($slug)
+    {
+        $supplier = Supplier::withTrashed()->where('slug', $slug)->first();
+        $supplier->restore();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Supplier restored successfully',
         ]);
     }
 }

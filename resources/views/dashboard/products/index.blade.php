@@ -29,8 +29,14 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4>Products</h4>
+<<<<<<< HEAD
                         <a href="{{ route('products.create') }}" class="btn btn-primary">Tambah Product</a>
                         <a href="{{ route('product.pdf') }}" class="btn btn-primary">Export PDF</a>
+=======
+                        @can('create-product')
+                            <a href="{{ route('products.create') }}" class="btn btn-primary">Tambah Product</a>
+                        @endcan
+>>>>>>> 92305e600de4eb244d144b7b15d6d62bc8062a83
                     </div>
                     
                 </div>

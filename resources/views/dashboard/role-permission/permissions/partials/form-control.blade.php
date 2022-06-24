@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="card-footer text-right">
-    <button type="submit" class="btn btn-primary">{{ $button ?? 'Update' }}</button>
+    <button type="submit" class="btn btn-primary {{ $button ?? 'update' }}">{{ $button ?? 'Update' }}</button>
     @if(request()->route()->getName() == 'permissions.edit')
         <a href="{{ route('permissions.index') }}" class="btn btn-secondary">Cancel</a>
     @endif

@@ -1,10 +1,10 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Units Trash')
+@section('title', 'Users')
 
 @section('breadcrumb')
   @parent
-  <li class="breadcrumb-item active">Categories Trash</li>
+  <li class="breadcrumb-item active">Users</li>
 @endsection
 
 @section('styles')
@@ -12,23 +12,37 @@
   <link rel="stylesheet"
     href="{{ asset('dashboardpage/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 @section('content')
+  @if (session('success'))
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <i class="icon fas fa-check"></i>
+      {{ session('success') }}
+    </div>
+  @endif
+
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">
-          <h4>Categories Trash</h4>
+          <div class="d-flex justify-content-between align-items-center">
+            <h4>Users</h4>
+            @can('create-users')
+              <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah User</a>
+            @endcan
+          </div>
         </div>
         <div class="card-body">
-          <table class="table table-hover" id="units-table">
+          <table class="table table-hover" id="users-table">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Action</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Joined Since</th>
               </tr>
             </thead>
           </table>
@@ -45,15 +59,14 @@
   <script src="{{ asset('dashboardpage/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
   <script src="{{ asset('dashboardpage/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
   <script src="{{ asset('dashboardpage/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-  <script src="{{ asset('dashboardpage/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
   <script>
     $(function() {
-      $('#units-table').DataTable({
+      $('#users-table').DataTable({
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: '{{ route('trash.categories.table') }}',
+        ajax: '{{ route('users.index.table') }}',
         columns: [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex',
@@ -65,34 +78,18 @@
             name: 'name'
           },
           {
-            data: 'action',
-            name: 'action',
-            orderable: false,
-            searchable: false
-          }
+            data: 'email',
+            name: 'email'
+          },
+          {
+            data: 'roles',
+            name: 'roles'
+          },
+          {
+            data: 'created_at',
+            name: 'created_at'
+          },
         ]
-      });
-    });
-
-    $('#units-table').on('click', '.restore-item', function() {
-      let url = $(this).data('url');
-      let name = $(this).data('name');
-
-      $.ajax({
-        url: url,
-        type: 'PUT',
-        dataType: 'json',
-        data: {
-          method: 'PUT',
-          _token: '{{ csrf_token() }}',
-          submit: true,
-        },
-      }).always(function() {
-        Swal.fire({
-          title: 'Category " ' + name + ' " has been restored',
-          icon: 'success',
-        });
-        $('#units-table').DataTable().ajax.reload();
       });
     });
   </script>

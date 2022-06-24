@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class UnitController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view-unit', ['only' => ['index', 'unitsTable']]);
+        $this->middleware('permission:create-unit', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit-unit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-unit', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -129,22 +137,9 @@ class UnitController extends Controller
         })->editColumn('updated_at', function ($unit) {
             return $unit->updated_at->format('l j, F Y h:i:s A');
         })->addColumn('action', function ($unit) {
-            $urlEdit = route('unit.edit', $unit->slug);
-            $urlDelete = route('unit.destroy', $unit->slug);
-            return '
-                    <div class="row">
-                        <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit unit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn btn-danger delete-item"
-                                data-url="' . $urlDelete . '"
-                                data-name="' . $unit->name . '">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    ';
+            return view('dashboard.actions.unit', compact('unit'));
         })
             ->rawColumns(['action'])
-            ->make();;
+            ->make();
     }
 }

@@ -14,10 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Don't change the order of these seeders.
         $this->call([
+            RoleAndPermissionSeeder::class,
             UserTableSeeder::class,
             CategoryTableSeeder::class,
             UnitTableSeeder::class,
+            SupplierTableSeeder::class
         ]);
     }
 }

@@ -7,6 +7,10 @@
     <li class="breadcrumb-item active">Edit Role</li>
 @endsection
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+@endsection
+
 @section('content')
     <div class="callout callout-danger">
         <h5>Attention!</h5>
@@ -57,7 +61,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-right">
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary update">Update</button>
                         <a href="{{ route('roles.index') }}" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
@@ -65,3 +69,28 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('dashboardpage/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.update').click(function (e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Warning! You are about to edit the role, you might break the system roles functionality. Please ensure you're absolutely certain before proceeding.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, continue!",
+                }).then((isConfirmed) => {
+                    console.log(isConfirmed);
+                    if (isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

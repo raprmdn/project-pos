@@ -18,6 +18,14 @@ class ProductController extends Controller
 {
     use ImageTrait;
 
+    public function __construct()
+    {
+        $this->middleware('permission:view-product', ['only' => ['index', 'productsTable']]);
+        $this->middleware('permission:create-product', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit-product', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-product', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         return view('dashboard.products.index');
@@ -122,20 +130,7 @@ class ProductController extends Controller
                 }
             })
             ->addColumn('action', function ($product) {
-                $urlEdit = route('products.edit', $product->slug);
-                $urlDelete = route('products.destroy', $product->slug);
-                return '
-                        <div class="row">
-                            <a href="' . $urlEdit . '" class="btn btn-primary mr-2" title="Edit product">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button class="btn btn-danger delete-item"
-                                    data-url="' . $urlDelete . '"
-                                    data-name="' . $product->name . '">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        ';
+                return view('dashboard.actions.product', compact('product'));
             })
             ->rawColumns(['action', 'product_picture'])
             ->make();
