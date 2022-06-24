@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\ProductExport;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -101,10 +103,15 @@ class ProductController extends Controller
     public function generatePDF()
     {
         $data = Product::with(['unit', 'category'])->latest()->get();
-        
+
         $pdf = PDF::loadView('dashboard.products.mypdf', compact('data'));
 
         return $pdf->download('product.pdf');
+    }
+
+    public function generateExcel()
+    {
+        return Excel::download(new ProductExport,date('d-m-y-H:i:s').'_data_product.xlsx');
     }
 
     public function productsTable()

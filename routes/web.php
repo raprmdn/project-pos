@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
         ]);
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
         Route::get('generate-pdf', [ProductController::class, 'generatePDF'])->name('product.pdf');
+        Route::get('generate-excel', [ProductController::class, 'generateExcel'])->name('product.excel');
 
         Route::prefix('role-permission')->group(function () {
             Route::group(['middleware' => 'permission:view-permissions'], function () {
