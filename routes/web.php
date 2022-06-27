@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\{Category\CategoryController,
+use App\Http\Controllers\{
+    Category\CategoryController,
     Dashboard\DashboardController,
     Dashboard\ProductController,
     Dashboard\RolePermission\PermissionController,
@@ -9,7 +10,8 @@ use App\Http\Controllers\{Category\CategoryController,
     Dashboard\TransactionController,
     Dashboard\TrashController,
     Dashboard\UserController,
-    IndexController};
+    IndexController
+};
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +53,7 @@ Route::middleware('auth')->group(function () {
             Route::get('', [SaleController::class, 'index'])->name('sales.index');
             Route::get('{sale:uuid}', [SaleController::class, 'show'])->name('sales.show');
             Route::get('{sale:uuid}/detail-table', [SaleController::class, 'salesDetailTable'])->name('sales.detail.table');
+            Route::get('{sale:uuid}/invoice', [SaleController::class, 'printInvoice'])->name('sales.detail.invoice');
         });
         Route::get('sales-table', [SaleController::class, 'salesTable'])->name('sales.table')
             ->middleware(['permission:view-sales']);

@@ -111,12 +111,12 @@ class ProductController extends Controller
         $data = Product::with(['unit', 'category'])->latest()->get();
         $pdf = PDF::loadView('dashboard.products.mypdf', compact('data'));
 
-        return $pdf->download('product.pdf');
+        return $pdf->download(date('d-m-y-H:i:s') . '_product.pdf');
     }
 
     public function generateExcel()
     {
-        return Excel::download(new ProductExport,date('d-m-y-H:i:s').'_data_product.xlsx');
+        return Excel::download(new ProductExport, date('d-m-y-H:i:s') . '_data_product.xlsx');
     }
 
     public function productsTable()

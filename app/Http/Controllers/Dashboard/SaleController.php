@@ -27,7 +27,7 @@ class SaleController extends Controller
 
     public function salesDetailTable(Sale $sale)
     {
-        $products = SaleDetail::with(['product' => function($product) {
+        $products = SaleDetail::with(['product' => function ($product) {
             return $product->select('id', 'barcode', 'name', 'stock', 'category_id')->with('category:id,name');
         }])->where('sale_id', $sale->id)->latest()->get();
 
@@ -81,5 +81,12 @@ class SaleController extends Controller
             })
             ->rawColumns(['subtotal', 'discount', 'total', 'created_at', 'status', 'action'])
             ->make();
+    }
+    public function printInvoice(Sale $sale)
+    {
+        $sale = $sale->load(['user:id,name', 'sale_details' => function ($sale_details) {
+            return $sale_details->select('id', 'product_id', 'qty', 'sale_id', 'total', 'unit_price')->with('product:id,name');
+        }]);
+        return response()->json($sale);
     }
 }
