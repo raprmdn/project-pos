@@ -11,10 +11,14 @@ class OrderProduct extends Model
     protected $guarded = ['id'];
     public function order_product_details()
     {
-        return $this->hasMany(OrderProductDetail::class);
+        return $this->hasMany(OrderProductsDetail::class);
     }
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
     }
 }

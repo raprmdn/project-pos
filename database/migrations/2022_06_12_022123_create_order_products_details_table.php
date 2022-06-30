@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_product_id')->constrained('order_products');
             $table->foreignId('product_id')->constrained('products');
-            $table->unsignedDouble('unit_price');
             $table->integer('qty');
             $table->unsignedDouble('total');
             $table->timestamps();

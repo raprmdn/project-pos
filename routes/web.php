@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     Dashboard\TransactionController,
     Dashboard\TrashController,
     Dashboard\UserController,
-    IndexController
+    IndexController,
+    Dashboard\OrderController
 };
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Unit\UnitController;
@@ -45,6 +46,23 @@ Route::middleware('auth')->group(function () {
         Route::resource('products', ProductController::class)->parameters([
             'product' => 'slug'
         ]);
+        Route::prefix('orders')->group(function () {
+            Route::get('', [OrderController::class, 'index'])->name('orders.index');
+            Route::get('/{order:uuid}', [OrderController::class, 'create'])->name('orders.manage');
+            Route::get('/get-supplier', [SupplierController::class, 'getSupplier'])->name("order.supplier");
+            Route::post('/store', [OrderController::class, 'store'])->name("store.supplier");
+            Route::get('/detail/{order:uuid}', [OrderController::class, 'getDetailOrder'])->name("order.detail");
+            Route::get('get-product', [ProductController::class, 'getProduct']);
+            Route::post('post-detail-order/{order:uuid}', [OrderController::class, 'postDetailOrder'])->name("order.detail.product.create");
+            Route::get('get-detail-order/{order:uuid}', [OrderController::class, 'getDetailOrderProduct'])->name("order.detail.product.table");
+            Route::put('update-detail-product/{order:uuid}', [OrderController::class, 'updateDetailOrder'])->name('orders.detail.product.update');
+            Route::delete('delete-detail-product/{order:uuid}', [OrderController::class, 'deleteDetailOrder'])->name('orders.detail.product.delete');
+            Route::put('save-order/{order:uuid}', [OrderController::class, 'saveOrder'])->name('order.save');
+            Route::get('show/{order:uuid}', [OrderController::class, 'show'])->name('orders.show');
+            Route::delete('reset-order/{order:uuid}', [OrderController::class, 'resetOrder'])->name('order.reset');
+            Route::delete('cancel-order/{order:uuid}', [OrderController::class, 'cancelOrder'])->name('order.cancel');
+        });
+        Route::get('orders-table', [OrderController::class, 'ordersTable'])->name('orders.table');
         Route::get('products-table', [ProductController::class, 'productsTable'])->name('products.table');
         Route::get('generate-pdf', [ProductController::class, 'generatePDF'])->name('product.pdf');
         Route::get('generate-excel', [ProductController::class, 'generateExcel'])->name('product.excel');

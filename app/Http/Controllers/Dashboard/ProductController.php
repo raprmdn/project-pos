@@ -181,4 +181,11 @@ class ProductController extends Controller
             'picture' => $attributes['image'],
         ];
     }
+    public function getProduct()
+    {
+        return response()->json([
+            'status' => 200,
+            'data' => Product::with('category:id,name')->get()
+        ]);
+    }
 }

@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->string('invoice')->unique();
-            $table->integer('total_items');
-            $table->integer('subtotal');
-            $table->integer('discount');
-            $table->integer('total');
-            $table->string('notes');
+            $table->uuid()->unique();
+            $table->integer('total_items')->default(0);
+            $table->unsignedDouble('total')->default(0);
+            $table->string('notes')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });

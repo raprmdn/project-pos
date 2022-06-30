@@ -14,7 +14,7 @@ class Product extends Model
     protected $guarded = ['id'];
     protected $appends = ['product_picture'];
 
-    public function getProductPictureAttribute() : string
+    public function getProductPictureAttribute(): string
     {
         return "/storage/" . $this->picture;
     }

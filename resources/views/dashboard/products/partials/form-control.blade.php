@@ -68,7 +68,8 @@
 
   <div class="form-group">
     <label for="description">Product Description</label>
-    <textarea class="form-control" rows="3" id="description" name="description" placeholder="Enter product description">{{ $product->description }}</textarea>
+    <textarea class="form-control" rows="3" id="description" name="description"
+      placeholder="Enter product description">{{ $product->description }}</textarea>
     @error('price')
       <span class="invalid-feedback" role="alert">
         {{ $message }}

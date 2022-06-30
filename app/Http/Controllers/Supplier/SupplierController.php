@@ -139,4 +139,13 @@ class SupplierController extends Controller
             ->rawColumns(['action'])
             ->make();
     }
+
+    public function getSupplier()
+    {
+        $supplier = Supplier::all(['id', 'name']);
+        return response()->json([
+            'status' => 200,
+            'data' => $supplier
+        ]);
+    }
 }
