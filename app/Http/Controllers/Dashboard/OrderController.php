@@ -79,51 +79,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OrderProduct $order)
-    {
-        return view('dashboard.orders.show', compact('order'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function ordersTable()
     {
         $orders = OrderProduct::with('supplier:id,name')->latest()->get();
@@ -134,6 +89,9 @@ class OrderController extends Controller
             })
             ->editColumn('subtotal', function ($order) {
                 return 'Rp. ' . Helper::rupiahFormat($order->subtotal) . ',-';
+            })
+            ->editColumn('status', function ($order) {
+                return view('dashboard.actions.order-status', compact('order'));
             })
             ->editColumn('discount', function ($order) {
                 return $order->discount . '%';
@@ -147,7 +105,7 @@ class OrderController extends Controller
             ->addColumn('action', function ($order) {
                 return view('dashboard.actions.order', compact('order'));
             })
-            ->rawColumns(['action', 'subtotal', 'discount', 'total', 'supplier', 'created_at'])
+            ->rawColumns(['action', 'subtotal', 'discount', 'total', 'supplier', 'created_at', 'status'])
             ->make();
     }
 
