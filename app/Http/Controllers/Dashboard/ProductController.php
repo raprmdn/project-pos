@@ -167,6 +167,25 @@ class ProductController extends Controller
             ->make();
     }
 
+    public function selectProductsOrder()
+    {
+        $products = Product::with('category:id,name')->latest()->get();
+
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->editColumn('category', function ($product) {
+                return $product->category->name ?? '';
+            })
+            ->editColumn('price', function ($product) {
+                return 'Rp. ' . Helper::rupiahFormat($product->price) . ',-';
+            })
+            ->addColumn('action', function ($product) {
+                return view('dashboard.actions.select-product-order', compact('product'));
+            })
+            ->rawColumns(['category', 'price', 'action'])
+            ->make();
+    }
+
     private function _fields($attributes)
     {
         return [

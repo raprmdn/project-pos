@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Helpers\Helper;
+use App\Http\Resources\OrderDetailResource;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
@@ -15,22 +16,13 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $supplier = Supplier::all();
         return view('dashboard.orders.index', compact('supplier'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(OrderProduct $order)
     {
         if ($order->status == "completed") {
@@ -39,12 +31,6 @@ class OrderController extends Controller
         return view('dashboard.orders.create', compact('order'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -79,49 +65,18 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(OrderProduct $order)
     {
         return view('dashboard.orders.show', compact('order'));
     }
 
-    public function ordersTable()
-    {
-        $orders = OrderProduct::with('supplier:id,name')->latest()->get();
-        return DataTables::of($orders)
-            ->addIndexColumn()
-            ->editColumn('supplier', function ($order) {
-                return $order->supplier->name;
-            })
-            ->editColumn('subtotal', function ($order) {
-                return 'Rp. ' . Helper::rupiahFormat($order->subtotal) . ',-';
-            })
-            ->editColumn('discount', function ($order) {
-                return $order->discount . '%';
-            })
-            ->editColumn('total', function ($order) {
-                return 'Rp. ' . Helper::rupiahFormat($order->total) . ',-';
-            })
-            ->editColumn('created_at', function ($order) {
-                return $order->created_at->format('d M Y, H:i');
-            })
-            ->addColumn('action', function ($order) {
-                return view('dashboard.actions.order', compact('order'));
-            })
-            ->rawColumns(['action', 'subtotal', 'discount', 'total', 'supplier', 'created_at'])
-            ->make();
-    }
-
     public function getDetailOrder(OrderProduct $order)
     {
+        $order = $order->load('supplier:id,name');
+
         return response()->json([
             'status' => 200,
-            'data' => $order->load('supplier:id,name')
+            'data' => new OrderDetailResource($order),
         ]);
     }
 
@@ -137,65 +92,43 @@ class OrderController extends Controller
             ]);
         }
         $validated = $validator->validated();
+
+        $product = Product::findOrFail($validated['product_id']);
         try {
-            if ($order->order_product_details()->where('product_id', $validated['product_id'])->exists()) {
-                return response()->json([
-                    'status' => 200,
+            if ($order->order_product_details()->where('product_id', $product->id)->exists()) {
+                $order->order_product_details()->where('product_id', $product->id)->increment('qty', + 1);
+                $order->order_product_details()->where('product_id', $product->id)->update([
+                    'total' => $product->price * $order->order_product_details()->where('product_id', $product->id)->first()->qty
+                ]);
+            } else {
+                $order->order_product_details()->create([
+                    'product_id' => $product->id,
+                    'qty' => 1,
+                    'total' => $product->price
                 ]);
             }
-            OrderProductsDetail::create([
-                'order_product_id' => $order->id,
-                'product_id' => $validated['product_id'],
-                'qty' => 1,
-                'total' => 0,
-            ]);
+
             $order->update([
-                'total_items' => $order->total_items + 1
+                'total' => $order->order_product_details()->sum('total'),
+                'total_items' => $order->order_product_details()->sum('qty'),
             ]);
+
             return response()->json([
                 'status' => 200,
+                'message' => 'Successfully added product to order',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 400,
                 'message' => $th
             ]);
-            //throw $th;
         }
-    }
-
-    public function getDetailOrderProduct(OrderProduct $order)
-    {
-        $products = OrderProductsDetail::with(['product' => function ($product) {
-            return $product->select('id', 'barcode', 'name', 'category_id')->with('category:id,name');
-        }])->where('order_product_id', $order->id)->latest()->get();
-
-        return DataTables::of($products)
-            ->addIndexColumn()
-            ->editColumn('barcode', function ($product) {
-                return $product->product->barcode ?? null;
-            })
-            ->editColumn('product', function ($product) {
-                return $product->product->name ?? null;
-            })
-            ->editColumn('category', function ($product) {
-                return $product->product->category->name ?? null;
-            })
-            ->editColumn('subtotal', function ($product) {
-                return 'Rp. ' . Helper::rupiahFormat($product->total) . ',-';
-            })
-            ->addColumn('action', function ($order) {
-                return view('dashboard.actions.order-detail', compact('order'));
-            })
-            ->rawColumns(['barcode', 'product', 'category', 'subtotal', 'action'])
-            ->make();
     }
 
     public function updateDetailOrder(OrderProduct $order, Request $request)
     {
         $validator = Validator::make($request->all(), [
             'qty' => 'required|numeric',
-            'total' => 'required|numeric',
             'product_id' => 'required'
         ]);
         if ($validator->fails()) {
@@ -205,15 +138,20 @@ class OrderController extends Controller
             ]);
         }
         $validated = $validator->validated();
+
+        $product = Product::findOrFail($validated['product_id']);
         try {
-            $tmpTotal = $order->order_product_details()->where('product_id', $validated['product_id'])->first()->total;
-            $order->order_product_details()->where('product_id', $validated['product_id'])->first()->update([
+            $orderProductDetails = $order->order_product_details()->where('product_id', $product->id)->first();
+            $orderProductDetails->update([
                 'qty' => $validated['qty'],
-                'total' => $validated['total']
+                'total' => $product->price * $validated['qty']
             ]);
+
             $order->update([
-                'total' => $order->total - $tmpTotal + $validated['total']
+                'total' => $order->order_product_details()->sum('total'),
+                'total_items' => $order->order_product_details()->sum('qty'),
             ]);
+
             return response()->json([
                 'status' => 200,
                 'message' => 'sukses'
@@ -223,7 +161,6 @@ class OrderController extends Controller
                 'status' => 400,
                 'message' => $th
             ]);
-            //throw $th;
         }
     }
 
@@ -239,23 +176,23 @@ class OrderController extends Controller
             ]);
         }
         $validated = $validator->validated();
+
         try {
-            $tmpTotal = $order->order_product_details()->where("product_id", $validated['product_id'])->first()->total;
             $order->order_product_details()->where('product_id', $validated['product_id'])->first()->delete();
             $order->update([
-                'total' => $order->total - $tmpTotal,
-                'total_items' => $order->total_items - 1
+                'total' => $order->order_product_details()->sum('total'),
+                'total_items' => $order->order_product_details()->sum('qty'),
             ]);
+
             return response()->json([
                 'status' => 200,
-                'message' => 'sukses'
+                'message' => 'Successfully deleted product from order',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 401,
                 'message' => $th
             ]);
-            //throw $th;
         }
     }
 
@@ -298,5 +235,63 @@ class OrderController extends Controller
             'status' => 200,
             'message' => 'sukses'
         ]);
+    }
+
+    public function ordersTable()
+    {
+        $orders = OrderProduct::with('supplier:id,name')->latest()->get();
+
+        return DataTables::of($orders)
+            ->addIndexColumn()
+            ->editColumn('supplier', function ($order) {
+                return $order->supplier->name;
+            })
+            ->editColumn('subtotal', function ($order) {
+                return 'Rp. ' . Helper::rupiahFormat($order->subtotal) . ',-';
+            })
+            ->editColumn('discount', function ($order) {
+                return $order->discount . '%';
+            })
+            ->editColumn('total', function ($order) {
+                return 'Rp. ' . Helper::rupiahFormat($order->total) . ',-';
+            })
+            ->editColumn('status', function ($order) {
+                return view('dashboard.actions.order-status', compact('order'));
+            })
+            ->editColumn('created_at', function ($order) {
+                return $order->created_at->format('d M Y, H:i');
+            })
+            ->addColumn('action', function ($order) {
+                return view('dashboard.actions.order', compact('order'));
+            })
+            ->rawColumns(['action', 'subtotal', 'discount', 'total', 'status', 'supplier', 'created_at'])
+            ->make();
+    }
+
+    public function getDetailOrderProduct(OrderProduct $order)
+    {
+        $products = OrderProductsDetail::with(['product' => function ($product) {
+            return $product->select('id', 'barcode', 'name', 'category_id')->with('category:id,name');
+        }])->where('order_product_id', $order->id)->latest()->get();
+
+        return DataTables::of($products)
+            ->addIndexColumn()
+            ->editColumn('barcode', function ($product) {
+                return $product->product->barcode ?? null;
+            })
+            ->editColumn('product', function ($product) {
+                return $product->product->name ?? null;
+            })
+            ->editColumn('category', function ($product) {
+                return $product->product->category->name ?? null;
+            })
+            ->editColumn('subtotal', function ($product) {
+                return 'Rp. ' . Helper::rupiahFormat($product->total) . ',-';
+            })
+            ->addColumn('action', function ($order) {
+                return view('dashboard.actions.order-detail', compact('order'));
+            })
+            ->rawColumns(['barcode', 'product', 'category', 'subtotal', 'action'])
+            ->make();
     }
 }

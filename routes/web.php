@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('{sale:uuid}/cancel-transaction', [TransactionController::class, 'cancelTransaction'])->name('transactions.cancel');
         });
         Route::get('select-products', [ProductController::class, 'selectProducts'])->name('select.products');
+        Route::get('select-products-order', [ProductController::class, 'selectProductsOrder'])->name('select.products.order');
 
         Route::prefix('role-permission')->group(function () {
             Route::group(['middleware' => 'permission:view-permissions'], function () {

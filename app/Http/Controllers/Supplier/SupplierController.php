@@ -116,15 +116,16 @@ class SupplierController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Supplier $supplier)
     {
+        if ($supplier->order_product()->exists()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Supplier has order product, can not delete this supplier'
+            ]);
+        }
         $supplier->delete();
+
         return response()->json([
             'status' => true,
             'message' => 'Supplier deleted successfully'

@@ -68,6 +68,7 @@ class TransactionController extends Controller
                 'message' => "This transaction doesn't have any product, please add product first",
             ]);
         }
+
         $sale = $this->transactionService->saveTransaction($sale, request('notes'));
 
         return response()->json([
@@ -96,24 +97,25 @@ class TransactionController extends Controller
 
         try {
             $this->transactionService->addProduct($sale, $product);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully add product',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => "There's an issue, please try again later.",
             ]);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully add product',
-        ]);
     }
 
     public function updateProduct(Sale $sale)
     {
+        $qtyRequest = request('qty');
         $product = Product::find(request('product_id'));
         $saleDetail = SaleDetail::find(request('sale_detail_id'));
-        $isIncreaseStock = request('qty') > $product->stock + $saleDetail->qty;
+        $isIncreaseStock = $qtyRequest > $product->stock + $saleDetail->qty;
 
         if (!$product || !$saleDetail || $saleDetail->sale_id !== $sale->id) {
             return response()->json([
@@ -130,18 +132,18 @@ class TransactionController extends Controller
         }
 
         try {
-            $this->transactionService->updateProduct($sale, $product, $saleDetail);
+            $this->transactionService->updateProduct($sale, $product, $saleDetail, $qtyRequest);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully update qty',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => "There's an issue, please try again later.",
             ]);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully update qty',
-        ]);
     }
 
     public function deleteProduct(Sale $sale)
@@ -158,17 +160,17 @@ class TransactionController extends Controller
 
         try {
             $this->transactionService->deleteProduct($sale, $product, $saleDetail);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully delete product',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => "There's an issue, please try again later.",
             ]);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully delete product',
-        ]);
     }
 
     public function applyDiscount(Sale $sale)
@@ -183,17 +185,17 @@ class TransactionController extends Controller
 
         try {
             $this->transactionService->applyDiscount($sale, $discount);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully apply the discount',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => "There's an issue, please try again later.",
             ]);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully apply the discount',
-        ]);
     }
 
     public function applyCash(Sale $sale)
@@ -208,34 +210,34 @@ class TransactionController extends Controller
 
         try {
             $this->transactionService->applyCash($sale, $cash);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully apply the cash',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => "There's an issue, please try again later.",
             ]);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully apply the cash',
-        ]);
     }
 
     public function resetTransaction(Sale $sale)
     {
         try {
             $this->transactionService->resetTransaction($sale);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfully reset transaction',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => "There's an issue, please try again later.",
             ]);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Successfully reset transaction',
-        ]);
     }
 
     public function cancelTransaction(Sale $sale)

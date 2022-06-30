@@ -52,23 +52,23 @@ class TransactionService
         });
     }
 
-    public function updateProduct($sale, $product, $saleDetail): void
+    public function updateProduct($sale, $product, $saleDetail, $qtyRequest): void
     {
-        DB::transaction(function () use ($sale, $product, $saleDetail) {
-            if (request('qty') < $saleDetail->qty) {
+        DB::transaction(function () use ($sale, $product, $saleDetail, $qtyRequest) {
+            if ($qtyRequest < $saleDetail->qty) {
                 $product->update([
-                    'stock' => $product->stock + ($saleDetail->qty - request('qty')),
+                    'stock' => $product->stock + ($saleDetail->qty - $qtyRequest),
                 ]);
             } else {
-                $diffQty = request('qty') - $saleDetail->qty;
+                $diffQty = $qtyRequest - $saleDetail->qty;
                 $product->update([
                     'stock' => $product->stock - $diffQty,
                 ]);
             }
 
             $saleDetail->update([
-                'qty' => request('qty'),
-                'total' => $product->price * request('qty'),
+                'qty' => $qtyRequest,
+                'total' => $product->price * $qtyRequest,
             ]);
 
             $this->_extracted($sale);

@@ -165,6 +165,8 @@
                   <th>Barcode</th>
                   <th>Product</th>
                   <th>Category</th>
+                  <th>Stock</th>
+                  <th>Price</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -203,15 +205,6 @@
             <div class="form-group">
               <label for="qty">Qty</label>
               <input type="text" class="form-control" id="qty">
-            </div>
-            <div class="form-group">
-              <label for="subtotal">Subtotal</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Rp</span>
-                </div>
-                <input type="text" class="form-control" id="subtotal">
-              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -253,52 +246,61 @@
     })
 
     function getDetailOrder() {
-      $.ajax({
-        url: "{{ route('order.detail', $order->uuid) }}",
-        method: 'GET',
-        dataType: 'json',
-        success: function(result) {
-          $("#order-date-preview-text").html(new Date(result.data.created_at).toDateString())
-          $("#supplier-name-preview-text").html(result.data.supplier.name)
-          $("#invoice-preview-text").html(result.data.invoice)
-          $("#total-preview-text").html(number.format(result.data.total))
-          $("#total-preview").val(result.data.total)
-        }
-      })
+        $.ajax({
+            url: "{{ route('order.detail', $order->uuid) }}",
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $("#order-date-preview-text").text(data.data.order_date)
+                $("#supplier-name-preview-text").text(data.data.supplier)
+                $("#invoice-preview-text").text(data.data.invoice)
+                $("#total-preview-text").text('Rp. ' + data.data.total.formatted)
+                $("#total-preview").val(data.data.total.formatted)
+            }
+        })
     }
+
     $(function() {
       getDetailOrder()
     })
 
     $('#products-list').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: '{{ route('select.products') }}',
-      columns: [{
-          data: 'DT_RowIndex',
-          name: 'DT_RowIndex',
-          searchable: false,
-          orderable: false
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('select.products.order') }}',
+        columns: [{
+            data: 'DT_RowIndex',
+            name: 'DT_RowIndex',
+            searchable: false,
+            orderable: false
         },
-        {
-          data: 'barcode',
-          name: 'barcode'
-        },
-        {
-          data: 'name',
-          name: 'name'
-        },
-        {
-          data: 'category',
-          name: 'category'
-        },
-        {
-          data: 'action',
-          name: 'action',
-          orderable: false,
-          searchable: false
-        }
-      ]
+            {
+                data: 'barcode',
+                name: 'barcode'
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'category',
+                name: 'category'
+            },
+            {
+                data: 'stock',
+                name: 'stock'
+            },
+            {
+                data: 'price',
+                name: 'price'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
+        ]
     });
 
     $('#order-product-detail').DataTable({
@@ -344,29 +346,30 @@
       searching: false
     });
 
-    $("#products-list").on("click", ".selected-product", function() {
-      $("#loadingSelectProduct").removeClass("d-none")
-      $.ajax({
-        url: "{{ route('order.detail.product.create', $order->uuid) }}",
-        dataType: 'json',
-        method: 'POST',
-        data: {
-          product_id: $(this).data("id"),
-          _token: '{{ csrf_token() }}'
-        },
-        success: function() {
-          $("#product").modal("hide")
-          $("#loadingSelectProduct").addClass("d-none")
-          $('#order-product-detail').DataTable().ajax.reload()
-        }
-      })
+    $("#products-list").on("click", ".selected-product", function () {
+        $("#loadingSelectProduct").removeClass("d-none")
+        $.ajax({
+            url: "{{ route('order.detail.product.create', $order->uuid) }}",
+            dataType: 'json',
+            method: 'POST',
+            data: {
+                product_id: $(this).data("id"),
+                _token: '{{ csrf_token() }}'
+            },
+            success: function () {
+                $("#product").modal("hide")
+                $("#loadingSelectProduct").addClass("d-none")
+                $('#order-product-detail').DataTable().ajax.reload()
+                getDetailOrder()
+            }
+        })
     })
 
-    $("#order-product-detail").on('click', '#edit-order-detail-button', function() {
-      $("#name").val($(this).data("product-name"))
-      $("#qty").val($(this).data("order-detail-qty"))
-      $("#subtotal").val($(this).data("order-detail-total"))
-      $("#updateDetailProduct").data("product-id", $(this).data("product-id"))
+    $("#order-product-detail").on('click', '#edit-order-detail-button', function () {
+        $('#editProductLabel').text(`Edit qty ${$(this).data("product-name")}`)
+        $("#name").val($(this).data("product-name"))
+        $("#qty").val($(this).data("order-detail-qty"))
+        $("#updateDetailProduct").data("product-id", $(this).data("product-id"))
     })
 
     $("#formEditProduct").submit(function(e) {
@@ -378,7 +381,6 @@
         data: {
           _token: '{{ csrf_token() }}',
           qty: $("#qty").val(),
-          total: $("#subtotal").val(),
           product_id: $("#updateDetailProduct").data("product-id")
         },
         success: function(result) {
