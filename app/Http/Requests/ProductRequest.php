@@ -13,7 +13,7 @@ class ProductRequest extends FormRequest
             'category' => ['required'],
             'unit' => ['required'],
             'stock' => ['nullable', 'integer', 'min:0'],
-            'price' => ['required', 'numeric', 'min:0'],
+            'price' => ['required', 'min:0'],
             'description' => ['nullable', 'string', 'max:255'],
             'product_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,svg', 'max:3048'],
         ];

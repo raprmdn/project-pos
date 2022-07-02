@@ -44,6 +44,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
+        $request->merge(['price' => str_replace('.', '', $request->price)]);
         $request['slug'] = Str::slug($request->product_name) . '-' . Str::random(4);
         if ($request->hasFile('product_image')) {
             $picture = $request->file('product_image');

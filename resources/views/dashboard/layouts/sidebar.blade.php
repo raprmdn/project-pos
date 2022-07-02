@@ -67,9 +67,9 @@ $menus = [
         'menu' => [
             [
                 'name' => 'Laporan Penjualan',
-                'route' => '',
+                'route' => 'reports.index',
                 'icon' => 'fa fa-file-pdf',
-                'active' => false,
+                'active' => request()->segment(2) == 'reports',
                 'permissions' => 'view-sales-reports',
             ],
         ],

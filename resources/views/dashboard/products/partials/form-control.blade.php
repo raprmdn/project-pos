@@ -57,7 +57,7 @@
 
   <div class="form-group">
     <label for="price">Product Price</label>
-    <input type="number" class="form-control @error('price') is-invalid @enderror" id="price" name="price"
+    <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price"
       value="{{ old('price') ?? $product->price }}" placeholder="Enter product price">
     @error('price')
       <span class="invalid-feedback" role="alert">
@@ -105,10 +105,23 @@
 </div>
 
 @push('scripts')
-  <script src="{{ asset('dashboardpage/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
-  <script>
-    $(document).ready(function() {
-      bsCustomFileInput.init();
-    });
-  </script>
+    <script src="{{ asset('dashboardpage/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    <script src="{{ asset('dashboardpage/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('dashboardpage/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+
+    <script>
+        $('#price').inputmask("currency", {
+            min: 1,
+            allowMinus: false,
+            allowZero: false,
+            rightAlign: false,
+            radixPoint: ",",
+            groupSeparator: ".",
+            digits: 0,
+        });
+
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
 @endpush

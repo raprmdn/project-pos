@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\{
-    Category\CategoryController,
+use App\Http\Controllers\{Category\CategoryController,
     Dashboard\DashboardController,
     Dashboard\ProductController,
+    Dashboard\ReportController,
     Dashboard\RolePermission\PermissionController,
     Dashboard\RolePermission\RoleController,
     Dashboard\SaleController,
@@ -11,8 +11,7 @@ use App\Http\Controllers\{
     Dashboard\TrashController,
     Dashboard\UserController,
     IndexController,
-    Dashboard\OrderController
-};
+    Dashboard\OrderController};
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +74,10 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('sales-table', [SaleController::class, 'salesTable'])->name('sales.table')
             ->middleware(['permission:view-sales']);
+
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/filters/{start_date}/{end_date}', [ReportController::class, 'reportsTable'])->name('reports.table');
+        Route::get('reports/filters/{start_date}/{end_date}/export-pdf', [ReportController::class, 'exportPDF'])->name('reports.export-pdf');
 
         Route::prefix('transactions')->middleware(['permission:create-transaction'])->group(function () {
             Route::get('', [TransactionController::class, 'create'])->name('transactions.create');
