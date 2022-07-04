@@ -70,6 +70,7 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product)
     {
+        $request->merge(['price' => str_replace('.', '', $request->price)]);
         if ($request->product_name != $product->name) {
             $request['slug'] = Str::slug($request->product_name) . '-' . Str::random(4);
         } else {
