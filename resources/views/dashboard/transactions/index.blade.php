@@ -311,28 +311,28 @@
       });
     });
 
-    $('#sale-product-detail').on('click', '#edit-sale-detail-button', function () {
-        $('#edit-product-sale-detail').modal('show');
-        let saleDetailId = $(this).data('sale-detail-id');
-        let saleDetailQty = $(this).data('sale-detail-qty');
-        let productId = $(this).data('product-id');
-        let productName = $(this).data('product-name');
-        let productStock = $(this).data('product-stock');
+    $('#sale-product-detail').on('click', '#edit-sale-detail-button', function() {
+      $('#edit-product-sale-detail').modal('show');
+      let saleDetailId = $(this).data('sale-detail-id');
+      let saleDetailQty = $(this).data('sale-detail-qty');
+      let productId = $(this).data('product-id');
+      let productName = $(this).data('product-name');
+      let productStock = $(this).data('product-stock');
 
-        $('#modal-edit-sale-detail-title').text(`Edit qty ${productName}`);
-        $('#update-form #product_name').val(productName);
-        $('#update-form #sale-detail-id').val(saleDetailId);
-        $('#update-form #product-id').val(productId);
-        $('#update-form #qty').val(saleDetailQty);
-        $('#update-form #info-stock-product').text(`Product stock is ${productStock} left.`);
-        $('#update-form #qty').inputmask("numeric", {
-            alias: "numeric",
-            min: 1,
-            max: productStock + saleDetailQty,
-            allowMinus: false,
-            allowZero: false,
-            rightAlign: false,
-        });
+      $('#modal-edit-sale-detail-title').text(`Edit qty ${productName}`);
+      $('#update-form #product_name').val(productName);
+      $('#update-form #sale-detail-id').val(saleDetailId);
+      $('#update-form #product-id').val(productId);
+      $('#update-form #qty').val(saleDetailQty);
+      $('#update-form #info-stock-product').text(`Product stock is ${productStock} left.`);
+      $('#update-form #qty').inputmask("numeric", {
+        alias: "numeric",
+        min: 1,
+        max: productStock + saleDetailQty,
+        allowMinus: false,
+        allowZero: false,
+        rightAlign: false,
+      });
     });
 
     $('#update-form').on('submit', function(e) {
@@ -575,13 +575,13 @@
                                     <tbody>
                                     ${data.sale_details.map((sale_detail)=>{
                                         return `
-                                          <tr>
-                                              <td>
-                                                  <p style="margin:0">${sale_detail.product.name}</p>
-                                                  <p style="margin:0">${sale_detail.qty} @${formatNum(sale_detail.unit_price)}</p>
-                                              </td>
-                                              <td style="text-align:right">${format.format(sale_detail.total)}</td>
-                                          </tr>`;
+                                            <tr>
+                                                <td>
+                                                    <p style="margin:0">${sale_detail.product.name}</p>
+                                                    <p style="margin:0">${sale_detail.qty} @${formatNum(sale_detail.unit_price)}</p>
+                                                </td>
+                                                <td style="text-align:right">${format.format(sale_detail.total)}</td>
+                                            </tr>`;
                                     }).join('')}
                                     </tbody>
                                 </table>
@@ -713,7 +713,7 @@
           $('#received').val(data.data.received.formatted);
           console.log(data.message);
 
-          if (data.data.total.raw < data.data.received.raw) {
+          if (data.data.total.raw <= data.data.received.raw) {
             $('#save-transaction').attr('disabled', false).removeClass('btn-secondary').addClass('btn-primary');
           } else {
             $('#save-transaction').attr('disabled', true).removeClass('btn-primary').addClass('btn-secondary');
