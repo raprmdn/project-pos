@@ -713,7 +713,7 @@
           $('#received').val(data.data.received.formatted);
           console.log(data.message);
 
-          if (data.data.total.raw <= data.data.received.raw) {
+          if (data.data.total.raw <= data.data.received.raw && data.data.total.raw > 0) {
             $('#save-transaction').attr('disabled', false).removeClass('btn-secondary').addClass('btn-primary');
           } else {
             $('#save-transaction').attr('disabled', true).removeClass('btn-primary').addClass('btn-secondary');
