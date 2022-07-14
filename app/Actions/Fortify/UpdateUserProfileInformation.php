@@ -2,13 +2,16 @@
 
 namespace App\Actions\Fortify;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Validator;
+use App\Traits\ImageTrait;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
+    use ImageTrait;
     /**
      * Validate and update the given user's profile information.
      *
@@ -18,7 +21,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update($user, array $input)
     {
-        Validator::make($input, [
+        $validationRules = [
             'name' => ['required', 'string', 'max:255'],
 
             'email' => [
@@ -26,18 +29,33 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
             ],
-        ])->validateWithBag('updateProfileInformation');
+        ];
+        if (!empty($input['photo'])) {
+            $validationRules['photo'] = ['mimes:png,jpg,jpeg', 'max:4096'];
+        }
+        Validator::make($input, $validationRules)->validateWithBag('updateProfileInformation');
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (
+            $input['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
             ])->save();
+        }
+
+        if (!empty($input['photo'])) {
+            $input['photo'] = $this->assignPicture('profile/images', $input['photo'], Str::slug($user->name));
+        }
+
+        try {
+            $user->update($this->_fields($input));
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 
@@ -57,5 +75,14 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         $user->sendEmailVerificationNotification();
+    }
+
+    protected function _fields(array $input): array
+    {
+        return [
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'photo' => empty($input['photo']) ? null : $input['photo'],
+        ];
     }
 }

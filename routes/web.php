@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\{Category\CategoryController,
+use App\Http\Controllers\{
+    Category\CategoryController,
     Dashboard\DashboardController,
     Dashboard\ProductController,
     Dashboard\ReportController,
@@ -11,7 +12,9 @@ use App\Http\Controllers\{Category\CategoryController,
     Dashboard\TrashController,
     Dashboard\UserController,
     IndexController,
-    Dashboard\OrderController};
+    Dashboard\OrderController,
+    Dashboard\ProfileController
+};
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Unit\UnitController;
 use Illuminate\Support\Facades\Route;
@@ -132,5 +135,7 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('users', UserController::class)->only(['index', 'create', 'store'])->middleware(['permission:view-users']);
         Route::get('users-table', [UserController::class, 'userTableWithRoles'])->name('users.index.table');
+
+        Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     });
 });

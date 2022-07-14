@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Units Trash')
+@section('title', 'Categories Trash')
 
 @section('breadcrumb')
   @parent

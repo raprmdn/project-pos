@@ -139,6 +139,13 @@ $menus = [
                 'active' => request()->segment(2) == 'users',
                 'permissions' => 'view-users',
             ],
+            [
+                'name' => 'Profile',
+                'route' => 'profile.index',
+                'icon' => 'fa fa-user',
+                'active' => request()->segment(2) == 'profile',
+                'permissions' => 'view-profile',
+            ],
         ],
     ],
 ];
@@ -187,12 +194,6 @@ $menus = [
             @endforeach
           @endcan
         @endforeach
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fa fa-user"></i>
-            <p>Profile</p>
-          </a>
-        </li>
         <li class="nav-header">SYSTEM</li>
         <li class="nav-item">
           <a href="#" class="nav-link"
