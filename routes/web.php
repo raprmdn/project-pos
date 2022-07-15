@@ -136,6 +136,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class)->only(['index', 'create', 'store'])->middleware(['permission:view-users']);
         Route::get('users-table', [UserController::class, 'userTableWithRoles'])->name('users.index.table');
 
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('profile', [ProfileController::class, 'index'])->name('profile.index')->middleware(['permission:view-profile']);
     });
 });

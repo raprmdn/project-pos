@@ -36,6 +36,7 @@ class RoleAndPermissionSeeder extends Seeder
             'view-suppliers-trash',
             'view-users',
             'view-chart',
+            'view-profile',
             'create-users',
             'create-category',
             'edit-category',
@@ -74,6 +75,7 @@ class RoleAndPermissionSeeder extends Seeder
             'view-purchase',
             'view-sales',
             'view-chart',
+            'view-profile',
             'create-transaction',
             'view-sales-reports',
             'view-products-trash',
@@ -94,8 +96,13 @@ class RoleAndPermissionSeeder extends Seeder
             'view-purchase',
             'view-sales',
             'create-transaction',
+            'view-settings-menu',
+            'view-profile',
         ]);
 
-        Role::create(['name' => 'user']);
+        Role::create(['name' => 'user'])->givePermissionTo([
+            'view-settings-menu',
+            'view-profile',
+        ]);
     }
 }
