@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
@@ -49,6 +50,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
 
         if (!empty($input['photo'])) {
+            if ($this->isExistPhoto()) {
+                Storage::delete($user->photo);
+            }
             $input['photo'] = $this->assignPicture('profile/images', $input['photo'], Str::slug($user->name));
         }
 
@@ -82,7 +86,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         return [
             'name' => $input['name'],
             'email' => $input['email'],
-            'photo' => empty($input['photo']) ? null : $input['photo'],
+            'photo' => empty($input['photo']) ? auth()->user()->photo : $input['photo'],
         ];
+    }
+
+    protected function isExistPhoto(): bool
+    {
+        return !is_null(auth()->user()->photo) && Storage::disk('public')->exists(auth()->user()->photo);
     }
 }
