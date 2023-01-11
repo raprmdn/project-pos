@@ -33,9 +33,8 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Slug</th>
-                            <th>Created At</th>
-                            <th>Updated At</th>
-                            <th>Aksi</th>
+                            <th>Created</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                     </table>
@@ -77,10 +76,6 @@
                         {
                             data: 'created_at',
                             name: 'created_at'
-                        },
-                        {
-                            data: 'updated_at',
-                            name: 'updated_at'
                         },
                         {
                             data: 'action',

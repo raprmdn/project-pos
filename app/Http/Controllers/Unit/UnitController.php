@@ -98,13 +98,9 @@ class UnitController extends Controller
     {
         $units = Unit::all();
         return DataTables::of($units)->addIndexColumn()->editColumn('created_at', function ($unit) {
-            return $unit->created_at->format('l j, F Y h:i:s A');
-        })->editColumn('updated_at', function ($unit) {
-            return $unit->updated_at->format('l j, F Y h:i:s A');
+            return $unit->created_at->format('d F Y, H:i');
         })->addColumn('action', function ($unit) {
             return view('dashboard.actions.unit', compact('unit'));
-        })
-            ->rawColumns(['action'])
-            ->make();
+        })->rawColumns(['action'])->make();
     }
 }

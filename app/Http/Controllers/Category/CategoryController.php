@@ -99,9 +99,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         return DataTables::of($categories)->addIndexColumn()->editColumn('created_at', function ($category) {
-            return $category->created_at->format('l j, F Y h:i:s A');
-        })->editColumn('updated_at', function ($category) {
-            return $category->updated_at->format('l j, F Y h:i:s A');
+            return $category->created_at->format('d F Y, H:i');
         })->addColumn('action', function ($category) {
             return view('dashboard.actions.category', compact('category'));
         })
