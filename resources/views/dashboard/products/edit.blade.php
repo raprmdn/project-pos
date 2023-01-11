@@ -14,7 +14,8 @@
                 <div class="card-header">
                     <h4>Edit Product : {{ $product->name }}</h4>
                 </div>
-                <form action="{{ route('products.update', $product->slug) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{ route('products.update', $product->slug) }}" method="POST"
+                      enctype="multipart/form-data" autocomplete="off">
                     @csrf
                     @method('PUT')
                     @include('dashboard.products.partials.form-control')

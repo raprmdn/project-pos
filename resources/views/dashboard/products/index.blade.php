@@ -9,8 +9,10 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('dashboardpage/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('dashboardpage/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 @endsection
 
@@ -35,7 +37,8 @@
                                     <i class="fas fa-file-export mr-1"></i>
                                     Export
                                 </button>
-                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false">
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div class="dropdown-menu" role="menu" style="">
@@ -59,17 +62,17 @@
                 <div class="card-body">
                     <table class="table table-hover" id="products-table">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Barcode</th>
-                                <th>Nama</th>
-                                <th>Stok</th>
-                                <th>Harga</th>
-                                <th>Kategori</th>
-                                <th>Satuan</th>
-                                <th>Gambar</th>
-                                <th>Action</th>
-                            </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Barcode</th>
+                            <th>Nama</th>
+                            <th>Stok</th>
+                            <th>Harga</th>
+                            <th>Kategori</th>
+                            <th>Satuan</th>
+                            <th>Gambar</th>
+                            <th>Action</th>
+                        </tr>
                         </thead>
                     </table>
                 </div>
@@ -89,7 +92,7 @@
     <script src="{{ asset('dashboardpage/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <script>
-        $(function() {
+        $(function () {
             $('#products-table').DataTable({
                 responsive: true,
                 processing: true,
@@ -125,7 +128,7 @@
                         url: url,
                         type: 'DELETE',
                         dataType: 'json',
-                        data: {method: 'DELETE', _token:"{{ csrf_token() }}", submit: true}
+                        data: {method: 'DELETE', _token: "{{ csrf_token() }}", submit: true}
                     }).always(function (data) {
                         if (data.status) {
                             Swal.fire({

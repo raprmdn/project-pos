@@ -5,7 +5,8 @@
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('index') }}" class="nav-link">Home</a>
-        </li><li class="nav-item d-none d-sm-inline-block">
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
         </li>
     </ul>
