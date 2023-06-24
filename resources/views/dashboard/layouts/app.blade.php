@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/fontawesome-free/css/all.min.css') }}">
     @yield('styles')
     <link rel="stylesheet" href="{{ asset('dashboardpage/dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/overlayScrollbars/css/overlayscrollbars.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboardpage/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -49,7 +49,7 @@
 </div>
 <script src="{{ asset('dashboardpage/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('dashboardpage/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('dashboardpage/plugins/overlayScrollbars/js/jquery.overlayscrollbars.min.js') }}"></script>
+<script src="{{ asset('dashboardpage/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <script src="{{ asset('dashboardpage/dist/js/adminlte.min.js') }}"></script>
 @stack('scripts')
 </body>
