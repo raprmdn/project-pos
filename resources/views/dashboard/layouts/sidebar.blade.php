@@ -25,13 +25,13 @@
                     'active' => request()->segment(2) == 'products',
                     'permissions' => 'view-product',
                 ],
-                [
-                    'name' => 'Supplier',
-                    'route' => 'suppliers.index',
-                    'icon' => 'fa fa-truck',
-                    'active' => request()->segment(2) == 'suppliers',
-                    'permissions' => 'view-supplier',
-                ],
+//                [
+//                    'name' => 'Supplier',
+//                    'route' => 'suppliers.index',
+//                    'icon' => 'fa fa-truck',
+//                    'active' => request()->segment(2) == 'suppliers',
+//                    'permissions' => 'view-supplier',
+//                ],
             ],
         ],
         [
